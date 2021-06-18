@@ -7,7 +7,6 @@ const Background = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
-  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +62,6 @@ const ModalContent = styled.div`
     flex-direction: column;
     align-self: center;
     justify-content: space-between;
-    height: 400px;
   }
   .inpt {
     margin-left: 10px;
@@ -177,7 +175,6 @@ export const Modal = ({ showModal, setShowModal }) => {
         <Background>
           <ModalWrapper showModal={showModal}>
             <ModalContent>
-              <form>
                 <div className="modal-header">
                   <h3 className="modal-title">Cadastro</h3>
                   <Template.Button
@@ -238,7 +235,9 @@ export const Modal = ({ showModal, setShowModal }) => {
                     <div className="inpt">
                       <Template.Button
                         onClick={() =>
+                          {
                           signUp(emailCadastro, senhaCadastro, setErros)
+                        }
                         }
                         id="btnEnviarCadastro"
                       >
@@ -247,7 +246,6 @@ export const Modal = ({ showModal, setShowModal }) => {
                     </div>
                   </div>
                 </div>
-              </form>
             </ModalContent>
           </ModalWrapper>
         </Background>

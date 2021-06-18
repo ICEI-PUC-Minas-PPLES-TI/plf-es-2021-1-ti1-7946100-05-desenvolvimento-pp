@@ -1,8 +1,20 @@
+import React, { PureComponent } from "react"
 import styled from "styled-components"
 import { palheta } from "../components/palheta"
 import * as Template from "../components/template"
 import { readDocsDuasCondicoes, removeDoc, updateDoc } from "../utils/utils"
 import { useEffect, useState, useRef } from "react"
+import {
+  ComposedChart,
+  Bar,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts"
 
 const Container = styled.div`
   background-color: ${() => palheta.background};
@@ -49,6 +61,13 @@ const Container = styled.div`
       white-space: nowrap;
     }
   }
+
+  .grafico-historico {
+    height: 300px;
+    max-width: 440px;
+    width: 100%;
+    margin: 100px auto 50px;
+  }
 `
 
 const HistoricoLinha = styled.div`
@@ -76,7 +95,7 @@ function checkDigit(number) {
 
 function transformarData(data) {
   let dataToDate = data.toDate()
-  let day = dataToDate.getDay(),
+  let day = dataToDate.getDate(),
     month = dataToDate.getMonth() + 1,
     year = dataToDate.getYear() - 100,
     hour = dataToDate.getHours(),
@@ -173,11 +192,55 @@ function CadaHistorico({
   )
 }
 
+function transformarData2(data) {
+  let day = data.getDate(),
+    month = data.getMonth() + 1
+
+  return checkDigit(day) + "/" + checkDigit(month)
+}
+
+const orderData = (historico, valor) => {
+  let historicoOrdenado = historico.sort(
+    (a, b) => a.data.seconds - b.data.seconds
+  )
+  let historicoGrafico = []
+  let inicio = new Date(historicoOrdenado[0].data.toDate()).setHours(0, 0, 0, 0)
+  let amanha = new Date().setHours(24, 0, 0, 0)
+  let i,
+    j = 0,
+    qtde = 0
+  for (i = inicio; i < amanha; i += 86400000) {
+    if (
+      j < historicoOrdenado.length &&
+      historicoOrdenado[j].data.toDate() > new Date(i) &&
+      historicoOrdenado[j].data.toDate() < new Date(i).setHours(24, 0, 0, 0)
+    ) {
+      qtde += Number(historicoOrdenado[j].quantidade)
+      historicoGrafico.push({
+        name: transformarData2(new Date(i)),
+        feito: Number(historicoOrdenado[j++].quantidade),
+      })
+    } else {
+      historicoGrafico.push({
+        name: transformarData2(new Date(i)),
+        feito: 0,
+      })
+    }
+  }
+  let media = Math.round(qtde / historicoGrafico.length*10)/10
+  historicoGrafico.map(e => {
+    e.media = media
+    e.meta = valor
+  })
+  return historicoGrafico
+}
+
 function HistoricoHabitos({ user, habito, setPagina }) {
   const [historico, setHistorico] = useState([])
   const [erros, setErros] = useState("")
   const [feito, setFeito] = useState(false)
   const [feitoRemover, setFeitoRemover] = useState(false)
+  const [historicoGrafico, setHistoricoGrafico] = useState([])
   const emojiRef = useRef(null)
 
   useEffect(() => {
@@ -219,6 +282,11 @@ function HistoricoHabitos({ user, habito, setPagina }) {
     if (erros !== "") console.log("erros no fetch historico de habitos", erros)
   }, [erros])
 
+  useEffect(() => {
+    if (historico.length > 0)
+      setHistoricoGrafico(orderData(historico, habito.valor))
+  }, [JSON.stringify(historico)])
+
   return (
     <Container>
       <div>
@@ -241,7 +309,7 @@ function HistoricoHabitos({ user, habito, setPagina }) {
             </div>
             <div className="lista-historico">
               {historico
-                .sort((a, b) => a - b)
+                .sort((a, b) => b.data.seconds - a.data.seconds)
                 .map((e, i) => (
                   <CadaHistorico
                     key={i}
@@ -251,6 +319,36 @@ function HistoricoHabitos({ user, habito, setPagina }) {
                     setFeitoRemover={setFeitoRemover}
                   />
                 ))}
+            </div>
+            <div className="grafico-historico">
+              <Template.Header3
+                style={{
+                  textAlign: "center",
+                  color: palheta.text,
+                  fontSize: "22px",
+                }}
+              >
+                Última semana
+              </Template.Header3>
+              <ResponsiveContainer width="99%">
+                <ComposedChart
+                  data={historicoGrafico}
+                  margin={{
+                    top: 5,
+                    right: 20,
+                    left: 20,
+                    bottom: 15,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="feito" fill="#82ca9d" />
+                  <Line type="monotone" dataKey="media" stroke="#ff7300" />
+                  <Line type="monotone" dataKey="meta" />
+                </ComposedChart>
+              </ResponsiveContainer>
             </div>
           </>
         )}
