@@ -89,7 +89,7 @@ function preencherMes(habitosMes,habitos){
       meta: 100
     })
   }
-  let media = Math.round((total / (habitos.length * 8)) * 100)
+  let media = Math.round((total / (habitos.length * 30)) * 100)
     historicoMes.map(e => (e.media = media))
   console.log(historicoMes)
   return historicoMes
