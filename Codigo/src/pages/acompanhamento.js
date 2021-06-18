@@ -44,49 +44,78 @@ const BodyPage = styled.div`
   `
   function checkDigit(number) {
     return number < 10 ? "0" + number : number
-  }
-
-  function transformarData2(data) {
+    }
+    
+    function transformarData2(data) {
     let day = data.getDate(),
-      month = data.getMonth() + 1
-  
+    month = data.getMonth() + 1
+    
     return checkDigit(day) + "/" + checkDigit(month)
-  }
-
-function preencherSemana(habitosSemana,habitos){
-  let historicoSemana = [] 
-  let data = new Date()
-  let amanha = new Date().setHours(24,0,0,0)
-  let total = 0 , i , habitosFeitos
-  let semanaPassada = new Date(data.getFullYear(),data.getMonth(),data.getDate()-7,0,0,0).setHours(0, 0, 0, 0)
-  for (i = semanaPassada;i<amanha;i+=86400000){
+    }
+    
+   function preencherSemana(habitosSemana,habitos){
+    let historicoSemana = [] 
+    let data = new Date()
+    let amanha = new Date().setHours(24,0,0,0)
+    let total = 0 , i , habitosFeitos
+    let semanaPassada = new Date(data.getFullYear(),data.getMonth(),data.getDate()-7,0,0,0).setHours(0, 0, 0, 0)
+    for (i = semanaPassada;i<amanha;i+=86400000){
+    console.log(new Date(i),new Date(amanha))
     habitosFeitos = habitosSemana.filter(e=>e.data.toDate() > i && e.data.toDate()<i+86400000).length
     total += habitosFeitos
     historicoSemana.push({
+    habitos_feitos: habitosFeitos / habitos.length * 100,
+    name: transformarData2(new Date (i)),
+    meta: 100
+    })
+    }
+    let media = Math.round((total / (habitos.length * 8)) * 100)
+    historicoSemana.map(e => (e.media = media))
+    return historicoSemana
+   }
+function preencherMes(habitosMes,habitos){
+  let historicoMes = [] 
+  let data = new Date()
+  let amanha = new Date().setHours(24,0,0,0)
+  let total = 0 , i , habitosFeitos
+  let mesPassado = new Date(data.getFullYear(),data.getMonth(),data.getDate()-30,0,0,0).setHours(0, 0, 0, 0)
+  for (i = mesPassado;i<amanha;i+=86400000){
+    console.log(new Date(i),new Date(amanha))
+    habitosFeitos = habitosMes.filter(e=>e.data.toDate() > i && e.data.toDate()<i+86400000).length
+    total += habitosFeitos
+    historicoMes.push({
       habitos_feitos: habitosFeitos / habitos.length * 100,
       name: transformarData2(new Date (i)),
       meta: 100
     })
   }
   let media = Math.round((total / (habitos.length * 8)) * 100)
-  historicoSemana.map(e => (e.media = media))
-  return historicoSemana
+    historicoMes.map(e => (e.media = media))
+  console.log(historicoMes)
+  return historicoMes
 }
 
 function Acompanhamento({ user, setPagina }) {
   const[habitosSemana, setHabitosSemana] = useState([])
   const[feitoLerSemana, setFeitoLerSemana] = useState(false)
   const[,setErroSemana] = useState("")
+  const[habitosMes, setHabitosMes] = useState([])
+  const[feitoLerMes, setFeitoLerMes] = useState(false)
+  const[,setErroMes] = useState("")
   const[habitos, setHabitos] = useState([])
   const[feitoLer, setFeitoLer] = useState(false)
   const[,setErro] = useState("")
   useEffect(()=>{
     readDocsUmaCondicao("habitos","user",user,setHabitos,setFeitoLer,setErro)
   },[])
+  console.log(habitos,feitoLer)
   useEffect(()=>{
     let data = new Date()
     let semanaPassada = new Date(data.getFullYear(),data.getMonth(),data.getDate()-7,0,0,0)
+    console.log(data,semanaPassada)
     readDocsDuasCondicoesData("historico_habito","user",user,"data",semanaPassada,setHabitosSemana,setFeitoLerSemana,setErroSemana)
+    let mesPassado = new Date(data.getFullYear(),data.getMonth(),data.getDate()-30,0,0,0)
+    readDocsDuasCondicoesData("historico_habito","user",user,"data",mesPassado,setHabitosMes,setFeitoLerMes,setErroMes)
   },[habitos])
   return (
     <BodyPage>
@@ -114,11 +143,36 @@ function Acompanhamento({ user, setPagina }) {
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
-                  <YAxis
-                  tickFormatter={tick => {
-                    return `${tick}%`
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="habitos_feitos" fill="#82ca9d" />
+                  <Line type="monotone" dataKey="media" stroke="#ff7300" />
+                  <Line type="monotone" dataKey="meta" />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="grafico-historico">
+              <Template.Header3
+                style={{
+                  textAlign: "center",
+                  color: palheta.text,
+                  fontSize: "22px",
+                }}
+              >
+                Último mes
+              </Template.Header3>
+              <ResponsiveContainer width="99%">
+                <ComposedChart
+                  data={preencherMes(habitosMes,habitos)}
+                  margin={{
+                    top: 5,
+                    right: 20,
+                    left: 20,
+                    bottom: 15,
                   }}
-                />
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
                   <Tooltip />
                   <Legend />
                   <Bar dataKey="habitos_feitos" fill="#82ca9d" />
