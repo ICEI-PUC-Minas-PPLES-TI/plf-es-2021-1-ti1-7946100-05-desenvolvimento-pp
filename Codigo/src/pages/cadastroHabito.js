@@ -3,51 +3,7 @@ import { useEffect, useState, useRef } from "react"
 import { palheta } from "../components/palheta"
 import * as Template from "../components/template"
 import React, { Component } from "react"
-import { createDoc } from "../utils/utils"
-
-/* function FormCadastroHabito(props) {
-  return (
-    <div className="Row">
-      <div className="Label">
-        <label>{props.label}</label>
-      </div>
-      <Template.NewInputs
-        type={props.type}
-        placeholder={props.placeholder}
-        required={props.required}
-      />
-    </div>
-  );
-}
-
-const FormHabitos = [
-  {
-    label: 'Meta ideal*',
-    type: 'number',
-    placeholder: '4 ',
-    required: 'required',
-  },
-  { label: 'Unidade', type: 'number', placeholder: 'Km', required: '' },
-  {
-    label: 'Periodicidade*',
-    type: 'text',
-    placeholder: 'Diária',
-    required: 'required',
-  },
-  {
-    label: 'Horário*',
-    type: 'time',
-    placeholder: '18:30',
-    required: 'required',
-  },
-  { label: 'Local', type: 'text', placeholder: 'Ruas do Bairro', required: '' },
-  {
-    label: 'Recompensa por hábito',
-    type: 'text',
-    placeholder: 'Comer um chocolate',
-    required: '',
-  },
-]; */
+import { createDoc, updateDoc } from "../utils/utils"
 
 const EmojiButtonStyled = styled.div`
   ul.dropdown-menu.show {
@@ -195,46 +151,11 @@ export const BodyPage = styled.div`
   }
 `
 
-/* function CadastroHabito() {
-  return (
-    <BodyPage>
-      <Template.Header1 style={{ textAlign: 'center' }}>
-        Cadastro de hábito
-      </Template.Header1>
-      <div className="Row">
-        <div className="Label">
-          <label>Hábito/Emoji*</label>
-        </div>
-        <div className="Label1">
-          <EmojiButton />
-          <Template.NewInputs placeholder="Correr" type="text" />
-        </div>
-      </div>
-
-      {FormHabitos.map((e, i) => (
-        <FormCadastroHabito
-          key={i}
-          label={e.label}
-          emoji={e.emoji}
-          type={e.type}
-          placeholder={e.placeholder}
-          required={e.required}
-        />
-      ))}
-
-      <div className="Submit">
-        <Template.Button className="Button">Salvar hábito</Template.Button>
-
-        <Template.Link>Mais informação</Template.Link>
-      </div>
-    </BodyPage>
-  ); */
-
 class CadastroHabito extends Component {
   constructor(props) {
     super(props)
 
-    this.initialState = this.props.edit ?? {
+    this.initialState = this.props.isEdit ? this.props.edit : {
       nome: "",
       ambiente: "",
       meta: "",
@@ -259,16 +180,28 @@ class CadastroHabito extends Component {
 
   onFormSubmit = event => {
     event.preventDefault()
-
-    createDoc(
-      "habitos",
-      this.state,
-      this.props.setHabitoCadastrado,
-      () => {}
-    ).then(() => {
-      this.setState(this.initialState)
-      this.props.setPagina(1)
-    })
+    if (this.props.isEdit) {
+      updateDoc(
+        "habitos",
+        this.state,
+        this.props.edit.docId,
+        this.props.setHabitoCadastrado,
+        () => {}        
+      ).then(() => {
+        this.setState(this.initialState)
+        this.props.setPagina(1)
+      })
+    } else {
+      createDoc(
+        "habitos",
+        this.state,
+        this.props.setHabitoCadastrado,
+        () => {}
+      ).then(() => {
+        this.setState(this.initialState)
+        this.props.setPagina(1)
+      })
+    }
   }
 
   render() {

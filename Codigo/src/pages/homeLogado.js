@@ -298,6 +298,26 @@ function HabitoLinha(props) {
                 }}
               ></i>
               <i
+                onClick = {() => {
+                  props.setHabitoSelecionado({
+                      nome: props.nome,
+                      habitoId: props.habitoId,
+                      ambiente: props.ambiente,
+                      meta: props.meta,
+                      emoji: props.emoji,
+                      unidade: props.unidade,
+                      periodicidade: props.periodicidade,
+                      horario: props.horario,
+                      recompensa: props.recompensa,
+                      user: props.user,
+                      docId: props.habitoId
+                  })
+                  props.setIsEdit(true)
+                  props.setPagina(2)
+                }} 
+                className="fa fa-pen"
+              ></i>
+              <i
                 onClick={() => {
                   if (window.confirm("Você deseja remover este hábito?"))
                     removeDoc(
@@ -519,6 +539,7 @@ function HomeLogado(props) {
                   setAtualizarHabitoLinha={setAtualizarHabitoLinha}
                   setHabitoSelecionado={props.setHabitoSelecionado}
                   setPagina={props.setPagina}
+                  setIsEdit={props.setIsEdit}
                   setFeito={setFeitoremover}
                   concluido={e.concluido ?? false}
                   concluidoId={e.concluidoId ?? ""}
@@ -531,6 +552,10 @@ function HomeLogado(props) {
                   nome={e.nome}
                   emoji={e.emoji}
                   ordem={i + 1}
+                  ambiente={e.ambiente}
+                  meta={e.meta}
+                  periodicidade={e.periodicidade}
+                  recompensa={e.recompensa}
                 />
               ))}
           </div>
@@ -560,7 +585,12 @@ function HomeLogado(props) {
           <div className="Submit">
             <Template.Button
               className="Button"
-              onClick={() => props.setPagina(2)}
+              onClick={() => 
+                {
+                  props.setIsEdit(false) 
+                  props.setPagina(2)
+                }
+              }
             >
               Adicionar Hábito
             </Template.Button>
