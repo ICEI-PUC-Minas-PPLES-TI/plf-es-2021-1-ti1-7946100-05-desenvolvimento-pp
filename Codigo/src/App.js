@@ -10,6 +10,7 @@ import BarraSuperior from "./pages/BarraSuperior"
 import HistoricoHabitos from "./pages/historicoHabito"
 import LoadingPage from "./pages/loadingPage"
 import { Modal } from "../src/components/Modal"
+import Acompanhamento from "../src/pages/acompanhamento"
 
 // const Telas = ["Home", "HomeLogado", "Cadastro de Hábitos", "Template"]
 
@@ -28,6 +29,7 @@ function App() {
   const [showModalEsqueciSenha, setShowModalEsqueciSenha] = useState(false)
   const [showModalAlterarSenha, setShowModalAlterarSenha] = useState(false)
   const [habitoSelecionado, setHabitoSelecionado] = useState(null)
+  const [isEdit, setIsEdit] = useState(false)
   const [habitoCadastrado, setHabitoCadastrado] = useState(false)
 
   useEffect(() => {
@@ -70,6 +72,7 @@ function App() {
           user={user != null ? user.uid : null}
           setPagina={setPagina}
           setHabitoSelecionado={setHabitoSelecionado}
+          setIsEdit={setIsEdit}
         />
       )}
       {pagina === 2 && (
@@ -77,6 +80,8 @@ function App() {
           user={user}
           setHabitoCadastrado={setHabitoCadastrado}
           setPagina={setPagina}
+          edit={habitoSelecionado}
+          isEdit={isEdit}
         />
       )}
       {pagina === 3 && <Template />}
@@ -84,6 +89,12 @@ function App() {
         <HistoricoHabitos
           user={user != null ? user.uid : null}
           habito={habitoSelecionado}
+          setPagina={setPagina}
+        />
+      )}
+      {pagina === 5 && (
+        <Acompanhamento
+          user={user != null ? user.uid : null}
           setPagina={setPagina}
         />
       )}
