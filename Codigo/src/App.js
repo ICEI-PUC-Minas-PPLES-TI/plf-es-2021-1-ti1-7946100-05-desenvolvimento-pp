@@ -28,6 +28,7 @@ function App() {
   const [showModalEsqueciSenha, setShowModalEsqueciSenha] = useState(false)
   const [showModalAlterarSenha, setShowModalAlterarSenha] = useState(false)
   const [habitoSelecionado, setHabitoSelecionado] = useState(null)
+  const [isEdit, setIsEdit] = useState(false)
   const [habitoCadastrado, setHabitoCadastrado] = useState(false)
 
   useEffect(() => {
@@ -70,6 +71,7 @@ function App() {
           user={user != null ? user.uid : null}
           setPagina={setPagina}
           setHabitoSelecionado={setHabitoSelecionado}
+          setIsEdit={setIsEdit}
         />
       )}
       {pagina === 2 && (
@@ -77,6 +79,8 @@ function App() {
           user={user}
           setHabitoCadastrado={setHabitoCadastrado}
           setPagina={setPagina}
+          edit={habitoSelecionado}
+          isEdit={isEdit}
         />
       )}
       {pagina === 3 && <Template />}
