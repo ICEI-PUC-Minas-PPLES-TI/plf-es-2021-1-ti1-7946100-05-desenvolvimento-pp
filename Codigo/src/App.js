@@ -4,7 +4,7 @@ import { auth } from "./config/firebase.config"
 import { palheta } from "./components/palheta"
 import Template from "./components/template"
 import CadastroHabito from "./pages/cadastroHabito"
-import HomeLogado from "./pages/homeLogado"
+import ListaDehabitos from "./pages/listaDeHabitos"
 import Home from "./pages/home"
 import BarraSuperior from "./pages/BarraSuperior"
 import HistoricoHabitos from "./pages/historicoHabito"
@@ -12,7 +12,6 @@ import LoadingPage from "./pages/loadingPage"
 import { Modal } from "../src/components/Modal"
 import Acompanhamento from "../src/pages/acompanhamento"
 
-// const Telas = ["Home", "HomeLogado", "Cadastro de Hábitos", "Template"]
 
 const AppDiv = styled.div`
   min-height: 100vh;
@@ -68,7 +67,7 @@ function App() {
       />
       {pagina === 0 && <Home setShowModal={setShowModal} />}
       {pagina === 1 && (
-        <HomeLogado
+        <ListaDehabitos
           user={user != null ? user.uid : null}
           setPagina={setPagina}
           setHabitoSelecionado={setHabitoSelecionado}

@@ -138,7 +138,6 @@ export async function readDocsDuasCondicoesData(
   setFeito,
   setErros
 ) {
-
   return await db
     .collection(colecao)
     .where(propriedade1, "==", valorPropriedade1)
@@ -203,4 +202,24 @@ export function logout() {
     .catch(error => {
       // An error happened.
     })
+}
+
+export const changeDateformat = data => {
+  let hour = data?.toDate().getHours() ?? 0
+  hour = hour < 10 ? "0" + hour : hour
+  let minute = data?.toDate().getMinutes() ?? 0
+  minute = minute < 10 ? "0" + minute : minute
+  return hour + ":" + minute
+}
+
+export const getHourAndMinuteFromFirebaseDate = data => {
+  let hourInMinutes = (data?.toDate()?.getHours() ?? 0) * 60
+  let minute = data?.toDate()?.getMinutes() ?? 0
+  return hourInMinutes + minute
+}
+
+export const getHourMinuteFromString = hour => {
+  let hourInMinutes = Number(hour.substring(0, 2)) * 60
+  let minute = Number(hour.substring(3, 5))
+  return hourInMinutes + minute
 }
