@@ -336,6 +336,7 @@ function Template() {
         <BarraDeProgressoVazia>
           <BarraDeProgressoCompleta valor={72} />
         </BarraDeProgressoVazia>
+        <Icon size={72}/>
       </div>
       <div className="colors-parte">
         <Header2>Colors</Header2>

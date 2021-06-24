@@ -34,7 +34,7 @@ function LoadingPage() {
   return showDiv ? (
     <Container>
       <div className="inside-div">
-        <Logo />
+        <Logo animated={true}/>
       </div>
     </Container>
   ) : null;

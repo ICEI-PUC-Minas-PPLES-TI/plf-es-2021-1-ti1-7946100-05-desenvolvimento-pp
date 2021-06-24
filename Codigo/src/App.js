@@ -9,7 +9,6 @@ import Home from "./pages/home"
 import BarraSuperior from "./pages/BarraSuperior"
 import HistoricoHabitos from "./pages/historicoHabito"
 import LoadingPage from "./pages/loadingPage"
-import { Modal } from "../src/components/Modal"
 import Acompanhamento from "../src/pages/acompanhamento"
 
 

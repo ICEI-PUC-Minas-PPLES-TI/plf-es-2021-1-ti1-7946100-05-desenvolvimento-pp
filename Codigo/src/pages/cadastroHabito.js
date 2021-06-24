@@ -110,7 +110,7 @@ export const BodyPage = styled.div`
   max-width: 600px;
   width: 100%;
   margin: auto;
-  min-height: 100%;
+  min-height: calc(100vh - 115px);
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
@@ -155,17 +155,19 @@ class CadastroHabito extends Component {
   constructor(props) {
     super(props)
 
-    this.initialState = this.props.isEdit ? this.props.edit : {
-      nome: "",
-      ambiente: "",
-      meta: "",
-      unidade: "",
-      periodicidade: "",
-      horario: "",
-      recompensa: "",
-      emoji: "😉",
-      user: this.props.user?.uid ?? "",
-    }
+    this.initialState = this.props.isEdit
+      ? this.props.edit
+      : {
+          nome: "",
+          ambiente: "",
+          meta: "",
+          unidade: "",
+          periodicidade: "",
+          horario: "",
+          recompensa: "",
+          emoji: "😉",
+          user: this.props.user?.uid ?? "",
+        }
 
     this.state = this.initialState
   }
@@ -186,7 +188,7 @@ class CadastroHabito extends Component {
         this.state,
         this.props.edit.docId,
         this.props.setHabitoCadastrado,
-        () => {}        
+        () => {}
       ).then(() => {
         this.setState(this.initialState)
         this.props.setPagina(1)
@@ -308,8 +310,9 @@ class CadastroHabito extends Component {
             <Template.Button type="submit" className="Button">
               Salvar hábito
             </Template.Button>
-            <Template.Link onClick={() => this.props.setPagina(1)}>Cancelar</Template.Link>
-            <Template.Link>Mais informação</Template.Link>
+            <Template.Link onClick={() => this.props.setPagina(1)}>
+              Cancelar
+            </Template.Link>
           </div>
         </form>
       </BodyPage>

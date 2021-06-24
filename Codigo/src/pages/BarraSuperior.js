@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import * as Template from "../components/template";
-import styled from "styled-components";
-import { login, logout } from "../utils/utils";
-import { palheta } from "../components/palheta";
-import { Modal } from "../components/Modal";
-import { ModalAS } from "../components/ModalAlterarSenha";
-import { ModalES } from "../components/ModalEsqueciSenha";
-import LogoTIAW from "../assets/LogoTIAW.png";
+import React, { useState, useEffect, useRef } from "react"
+import * as Template from "../components/template"
+import styled from "styled-components"
+import { login, logout } from "../utils/utils"
+import { palheta } from "../components/palheta"
+import { Modal } from "../components/Modal"
+import { ModalAS } from "../components/ModalAlterarSenha"
+import { ModalES } from "../components/ModalEsqueciSenha"
+import Logo from "../components/logo"
 
 const Navbar = styled.nav`
   padding: 20px;
@@ -44,92 +44,133 @@ const Navbar = styled.nav`
       margin: 5px;
     }
   }
-`;
-// const Container = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100vh;
-// `;
-const opcoes = ["Esqueci a senha", "Alterar minha senha"];
+
+  svg {
+    margin-left: 7px;
+  }
+
+  .dropdown-navegacao {
+    height: auto;
+    padding: 10px 15px;
+    z-index: 5;
+    background: ${() => palheta.background};
+    top: 91px;
+    border-radius: 4px;
+    position: absolute;
+    margin-left: -95px;
+    box-shadow: ${() => palheta.boxDropShadow};
+
+    ul {
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px;
+      color: ${() => palheta.text};
+
+      li {
+        cursor: pointer;
+        padding: 3px 0px;
+      }
+
+      li:hover {
+        filter: opacity(0.6);
+      }
+    }
+  }
+`
+
+const opcoes = ["Esqueci a senha", "Alterar minha senha"]
+
+function useOutsideAlerter(ref, setOpen) {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) setOpen(false)
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [ref])
+}
 
 function BarraSuperior(props) {
-  const [erros, setErros] = useState("");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [mmo, setmmo] = useState("");
+  const [erros, setErros] = useState("")
+  const [email, setEmail] = useState("")
+  const [senha, setSenha] = useState("")
+  const [mmo, setmmo] = useState("")
+  const [openNavegacao, setOpenNavegacao] = useState(false)
+  const wrapperRef = useRef(null)
+  useOutsideAlerter(wrapperRef, setOpenNavegacao)
 
-  const menuMaisOpcoes = (mmo) => {
+  const menuMaisOpcoes = mmo => {
     if (mmo == "Alterar minha senha") {
-      props.setShowModalAlterarSenha((prev) => !prev);
+      props.setShowModalAlterarSenha(prev => !prev)
 
-      setmmo("");
+      setmmo("")
     }
     if (mmo == "Esqueci a senha") {
-      props.setShowModalEsqueciSenha((prev) => !prev);
+      props.setShowModalEsqueciSenha(prev => !prev)
 
-      setmmo("");
+      setmmo("")
     }
-  };
+  }
 
   const openModal = () => {
     {
-      props.setShowModal((prev) => !prev);
+      props.setShowModal(prev => !prev)
     }
-  };
+  }
 
-  console.log(erros);
+  console.log(erros)
   useEffect(() => {
     if (erros !== "") {
-      let erros2;
+      let erros2
       if (erros === "Password should be at least 6 characters")
-        erros2 = "A senha deve conter no mínimo 6 caracteres";
+        erros2 = "A senha deve conter no mínimo 6 caracteres"
       if (erros === "The email address is already in use by another account.")
-        erros2 = "Email já cadastrado.";
+        erros2 = "Email já cadastrado."
       if (erros === "The email address is badly formatted.")
-        erros2 = "Formato de email inválido.";
+        erros2 = "Formato de email inválido."
       if (
         erros ===
         "There is no user record corresponding to this identifier. The user may have been deleted."
       )
-        erros2 = "Email não cadastrado.";
+        erros2 = "Email não cadastrado."
       if (
         erros ===
         "The password is invalid or the user does not have a password."
       )
-        erros2 = "Senha inválida.";
+        erros2 = "Senha inválida."
       if (
         erros ===
         "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
       )
         erros2 =
-          "Sua conta foi temporariamente desabilitada devido a diversas tentativas falhas de login.";
+          "Sua conta foi temporariamente desabilitada devido a diversas tentativas falhas de login."
 
-      alert(erros2);
+      alert(erros2)
     }
-  }, [erros]);
+  }, [erros])
+
+  const navegacao = pagina => {
+    props.setPagina(pagina)
+    setOpenNavegacao(false)
+  }
 
   return (
     <Navbar>
-      <img
-        alt="GoHabit"
-        className="Logo"
-        src={LogoTIAW}
-        onClick={() => props.setPagina(0)}
-      />
+      <Logo size={72} animated={false} />
       {!props.user && (
         <div>
           <Template.Input
             className={"input-header"}
             placeholder="email"
             type="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
           <Template.Input
             className={"input-header"}
             placeholder="senha"
             type="password"
-            onChange={(e) => setSenha(e.target.value)}
+            onChange={e => setSenha(e.target.value)}
           />
           <Template.Link
             onClick={() => login(email, senha, setErros)}
@@ -168,8 +209,8 @@ function BarraSuperior(props) {
                   <a
                     class="dropdown-item"
                     onClick={() => {
-                      setmmo(e);
-                      menuMaisOpcoes(mmo);
+                      setmmo(e)
+                      menuMaisOpcoes(mmo)
                     }}
                   >
                     {e}
@@ -181,11 +222,28 @@ function BarraSuperior(props) {
         </div>
       )}
       {props.user && (
-        <Template.Link onClick={() => logout()} className={"link-header"}>
-          logout
-        </Template.Link>
+        <>
+          <div>
+            <Template.Button onClick={() => setOpenNavegacao(!openNavegacao)}>
+              <i className="fas fa-bars" />
+            </Template.Button>
+            {openNavegacao && (
+              <div ref={wrapperRef} className="dropdown-navegacao">
+                <ul>
+                  <li onClick={() => navegacao(1)}>Hábitos</li>
+                  <li onClick={() => navegacao(1)}>Historico</li>
+                  <li onClick={() => navegacao(5)}>Acompanhamento</li>
+                  <li>Mais Informações</li>
+                  <li>Sobre</li>
+                  <li onClick={() => navegacao(3)}>Template</li>
+                  <li onClick={() => logout()}>Sair</li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </>
       )}
     </Navbar>
-  );
+  )
 }
-export default BarraSuperior;
+export default BarraSuperior
