@@ -1,4 +1,4 @@
-function Icon({animated, size}) {
+function Icon({animated, size, onClick}) {
   let svgSize = (size ?? 200) + ""
   return (
     <svg
@@ -8,6 +8,7 @@ function Icon({animated, size}) {
       viewBox="0 0 40 40"
       version="1.1"
       id="svg8"
+      onClick={() => onClick()}
     >
       <g className="Layer 1" transform="translate(-42.622356,-80.245611)">
         <path

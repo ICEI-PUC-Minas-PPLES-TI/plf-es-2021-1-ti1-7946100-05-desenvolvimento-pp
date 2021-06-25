@@ -47,6 +47,7 @@ const Navbar = styled.nav`
 
   svg {
     margin-left: 7px;
+    cursor: pointer;
   }
 
   .dropdown-navegacao {
@@ -157,7 +158,7 @@ function BarraSuperior(props) {
 
   return (
     <Navbar>
-      <Logo size={72} animated={false} />
+      <Logo size={72} animated={false} onClick={() => props.user? props.setPagina(1) : props.setPagina(0)}/>
       {!props.user && (
         <div>
           <Template.Input
@@ -234,7 +235,7 @@ function BarraSuperior(props) {
                   <li onClick={() => navegacao(1)}>Historico</li>
                   <li onClick={() => navegacao(5)}>Acompanhamento</li>
                   <li>Mais Informações</li>
-                  <li>Sobre</li>
+                  <li onClick={() => navegacao(6)}>Sobre</li>
                   <li onClick={() => navegacao(3)}>Template</li>
                   <li onClick={() => logout()}>Sair</li>
                 </ul>

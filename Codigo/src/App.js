@@ -10,7 +10,7 @@ import BarraSuperior from "./pages/BarraSuperior"
 import HistoricoHabitos from "./pages/historicoHabito"
 import LoadingPage from "./pages/loadingPage"
 import Acompanhamento from "../src/pages/acompanhamento"
-
+import Sobre from '../src/pages/sobre'
 
 const AppDiv = styled.div`
   min-height: 100vh;
@@ -96,6 +96,7 @@ function App() {
           setPagina={setPagina}
         />
       )}
+      {pagina === 6 && <Sobre />}
     </AppDiv>
   )
 }
