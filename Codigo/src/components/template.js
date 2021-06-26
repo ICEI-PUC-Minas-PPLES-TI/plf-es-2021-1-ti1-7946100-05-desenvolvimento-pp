@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import Icon from './logo'
+import Icon2 from './logoListing'
+import Icon3 from './logoListing2'
+import Icon4 from './logoCheck'
 import { palheta } from './palheta';
 
 export const Header1 = styled.h1`
@@ -337,6 +340,9 @@ function Template() {
           <BarraDeProgressoCompleta valor={72} />
         </BarraDeProgressoVazia>
         <Icon size={72}/>
+        <Icon2 size={72}/>
+        <Icon3 size={72}/>
+        <Icon4 size={72}/>
       </div>
       <div className="colors-parte">
         <Header2>Colors</Header2>
