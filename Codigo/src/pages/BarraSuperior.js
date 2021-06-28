@@ -89,7 +89,7 @@ function useOutsideAlerter(ref, setOpen) {
 
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [ref])
+  }, [ref, setOpen])
 }
 
 function BarraSuperior(props) {
@@ -102,25 +102,20 @@ function BarraSuperior(props) {
   useOutsideAlerter(wrapperRef, setOpenNavegacao)
 
   const menuMaisOpcoes = mmo => {
-    if (mmo == "Alterar minha senha") {
+    if (mmo === "Alterar minha senha") {
       props.setShowModalAlterarSenha(prev => !prev)
 
       setmmo("")
     }
-    if (mmo == "Esqueci a senha") {
+    if (mmo === "Esqueci a senha") {
       props.setShowModalEsqueciSenha(prev => !prev)
 
       setmmo("")
     }
   }
 
-  const openModal = () => {
-    {
-      props.setShowModal(prev => !prev)
-    }
-  }
+  const openModal = () => props.setShowModal(prev => !prev)
 
-  console.log(erros)
   useEffect(() => {
     if (erros !== "") {
       let erros2
@@ -158,7 +153,11 @@ function BarraSuperior(props) {
 
   return (
     <Navbar>
-      <Logo size={72} animated={false} onClick={() => props.user? props.setPagina(1) : props.setPagina(0)}/>
+      <Logo
+        size={72}
+        animated={false}
+        onClick={() => (props.user ? props.setPagina(1) : props.setPagina(0))}
+      />
       {!props.user && (
         <div>
           <Template.Input
@@ -195,27 +194,26 @@ function BarraSuperior(props) {
             setShowModalAlterarSenha={props.setShowModalAlterarSenha}
           />
 
-          <div class="dropdown" id="div-dropdown-opcoesLogin">
+          <div className="dropdown" id="div-dropdown-opcoesLogin">
             <Template.Link
-              class="btn btn-secondary dropdown-toggle"
               id="dropdownOpcoesLogin"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
               ?
             </Template.Link>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               {opcoes.map((e, i) => (
                 <li key={i}>
-                  <a
-                    class="dropdown-item"
+                  <button
+                    className="dropdown-item"
                     onClick={() => {
                       setmmo(e)
                       menuMaisOpcoes(mmo)
                     }}
                   >
                     {e}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -234,10 +232,13 @@ function BarraSuperior(props) {
                   <li onClick={() => navegacao(1)}>Hábitos</li>
                   <li onClick={() => navegacao(1)}>Historico</li>
                   <li onClick={() => navegacao(5)}>Acompanhamento</li>
-                  <li>Mais Informações</li>
+                  {/* <li>Mais Informações</li> */}
                   <li onClick={() => navegacao(6)}>Sobre</li>
-                  <li onClick={() => navegacao(3)}>Template</li>
-                  <li onClick={() => logout()}>Sair</li>
+                  {/* <li onClick={() => navegacao(3)}>Template</li> */}
+                  <li onClick={() => {
+                    logout()
+                    setOpenNavegacao(false)
+                    }}>Sair</li>
                 </ul>
               </div>
             )}

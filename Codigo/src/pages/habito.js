@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from "react"
-import { createDoc, removeDoc, readDocsDuasCondicoes, changeDateformat } from "../utils/utils"
+import {
+  createDoc,
+  removeDoc,
+  readDocsDuasCondicoes,
+  changeDateformat,
+} from "../utils/utils"
 import * as Template from "../components/template"
 import styled from "styled-components"
 import firebase from "firebase/app"
@@ -9,69 +14,103 @@ const HabitoLinhaStyled = styled.section`
   order: ${props => props.ordem};
 `
 
-function Habito(props) {
+function Habito({
+  habitosConcluidos,
+  setHabitosConcluidos,
+  setAtualizarHabitoLinha,
+  setHabitoSelecionado,
+  setPagina,
+  setIsEdit,
+  setFeitoLista,
+  concluidoLista,
+  concluidoId,
+  habitoId,
+  user,
+  valorLista,
+  unidade,
+  horario,
+  nome,
+  emoji,
+  ordemLista,
+  ambiente,
+  meta,
+  periodicidade,
+  recompensa,
+}) {
   const emojiRef = useRef(null)
-  const [concluido, setConcluido] = useState(props.concluido)
+  const [concluido, setConcluido] = useState(concluidoLista)
   const [ordem, setOrdem] = useState(
-    props.concluido ? props.ordem + 100 : props.ordem
+    concluidoLista ? ordemLista + 100 : ordemLista
   )
-  const [historicoHabitoDoc, setHistoricoHabitoDoc] = useState(
-    props.concluidoId
-  )
+  const [historicoHabitoDoc, setHistoricoHabitoDoc] = useState(concluidoId)
   const [fetchHistorico, setFetchHistorico] = useState(false)
   const [feitoRemover, setFeitoRemover] = useState(false)
-  const [valor, setValor] = useState(parseInt(props.valor))
+  const [valor, setValor] = useState(parseInt(valorLista))
   const [feito, setFeito] = useState(false)
-  const [erros, setErros] = useState("")
+  const [, setErros] = useState("")
   const [historicoConcluido, setHistoricoConcluido] = useState([])
   const [historicoFeito, setHistoricoFeito] = useState(false)
-  const [historicoErros, setHistoricoErros] = useState("")
+  const [, setHistoricoErros] = useState("")
 
   useEffect(() => {
-    if (emojiRef.current) emojiRef.current.innerHTML = props.emoji
-  }, [emojiRef])
+    if (emojiRef.current) emojiRef.current.innerHTML = emoji
+  }, [emojiRef, emoji])
 
   useEffect(() => {
     if (fetchHistorico && historicoHabitoDoc !== "") {
       setFetchHistorico(false)
 
       let habitosConcluidosAtualizado = []
-      props.habitosConcluidos.map(e => {
+      habitosConcluidos.forEach(e => {
         habitosConcluidosAtualizado.push(e)
       })
       habitosConcluidosAtualizado.push({
         docId: historicoHabitoDoc,
-        habito: props.habitoId,
+        habito: habitoId,
       })
-      props.setHabitosConcluidos(habitosConcluidosAtualizado)
-      props.setAtualizarHabitoLinha(true)
+      setHabitosConcluidos(habitosConcluidosAtualizado)
+      setAtualizarHabitoLinha(true)
     }
-  }, [historicoHabitoDoc])
+  }, [
+    historicoHabitoDoc,
+    habitoId,
+    habitosConcluidos,
+    fetchHistorico,
+    setAtualizarHabitoLinha,
+    setHabitosConcluidos,
+  ])
 
   useEffect(() => {
     if (feitoRemover) {
       let habitosConcluidosAtualizado = []
-      props.habitosConcluidos.map(e => {
+      habitosConcluidos.forEach(e => {
         if (e.docId !== historicoHabitoDoc) habitosConcluidosAtualizado.push(e)
       })
-      props.setHabitosConcluidos(habitosConcluidosAtualizado)
+      setHabitosConcluidos(habitosConcluidosAtualizado)
       setFeitoRemover(false)
-      props.setAtualizarHabitoLinha(true)
+      setAtualizarHabitoLinha(true)
     }
-  }, [feitoRemover])
+  }, [
+    feitoRemover,
+    habitosConcluidos,
+    historicoConcluido,
+    setAtualizarHabitoLinha,
+    setHabitosConcluidos,
+    historicoHabitoDoc
+  ])
 
   useEffect(() => {
     readDocsDuasCondicoes(
       "historico_habito",
       "user",
-      props.user,
+      user,
       "habito",
-      props.habitoId,
+      habitoId,
       setHistoricoConcluido,
       setHistoricoFeito,
       setHistoricoErros
     )
-  }, [feito])
+  }, [feito, user, habitoId])
 
   useEffect(() => {
     let inicio = new Date().setHours(0, 0, 0, 0)
@@ -97,13 +136,13 @@ function Habito(props) {
       }
     }
     let habitosConcluidosAtualizado = []
-    props.habitosConcluidos.map(e => {
+    habitosConcluidos.forEach(e => {
       habitosConcluidosAtualizado.push(e)
-      if (e.habito === props.habitoId) e.streak = count
+      if (e.habito === habitoId) e.streak = count
     })
-    props.setHabitosConcluidos(habitosConcluidosAtualizado)
+    setHabitosConcluidos(habitosConcluidosAtualizado)
     setHistoricoFeito(false)
-  }, [historicoFeito])
+  }, [historicoFeito, setHabitosConcluidos, historicoConcluido, habitoId])
 
   return (
     <HabitoLinhaStyled
@@ -112,20 +151,18 @@ function Habito(props) {
     >
       <div className="EmojiHorario">
         <Template.Emoji ref={emojiRef} className="Emoji">
-          {props.emoji}
+          {emoji}
         </Template.Emoji>
         <Template.TextoDestaque>
           <span className="Horario">
-            {typeof props.horario === "string"
-              ? props.horario
-              : changeDateformat(props.horario)}
+            {typeof horario === "string" ? horario : changeDateformat(horario)}
           </span>
         </Template.TextoDestaque>
       </div>
       <div className="NewInputs">
         <div className="CardHabito">
           <Template.TextoDestaque>
-            <div className="NomeHabito">{props.nome}</div>
+            <div className="NomeHabito">{nome}</div>
           </Template.TextoDestaque>
           <div className="Contador">
             <Template.TextoDestaque>
@@ -133,50 +170,45 @@ function Habito(props) {
                 className="fa fa-minus"
                 onClick={() => setValor(valor - 1)}
               ></i>
-              {valor} {props.unidade}
+              {valor} {unidade}
               <i className="fa fa-plus" onClick={() => setValor(valor + 1)}></i>
               <i
                 className="fa fa-history"
                 onClick={() => {
-                  props.setHabitoSelecionado({
-                    nome: props.nome,
-                    habitoId: props.habitoId,
-                    emoji: props.emoji,
-                    unidade: props.unidade,
-                    valor: parseInt(props.valor),
+                  setHabitoSelecionado({
+                    nome: nome,
+                    habitoId: habitoId,
+                    emoji: emoji,
+                    unidade: unidade,
+                    valor: parseInt(valorLista),
                   })
-                  props.setPagina(4)
+                  setPagina(4)
                 }}
               ></i>
               <i
                 onClick={() => {
-                  props.setHabitoSelecionado({
-                    nome: props.nome,
-                    habitoId: props.habitoId,
-                    ambiente: props.ambiente,
-                    meta: props.meta,
-                    emoji: props.emoji,
-                    unidade: props.unidade,
-                    periodicidade: props.periodicidade,
-                    horario: props.horario,
-                    recompensa: props.recompensa,
-                    user: props.user,
-                    docId: props.habitoId,
+                  setHabitoSelecionado({
+                    nome: nome,
+                    habitoId: habitoId,
+                    ambiente: ambiente,
+                    meta: meta,
+                    emoji: emoji,
+                    unidade: unidade,
+                    periodicidade: periodicidade,
+                    horario: horario,
+                    recompensa: recompensa,
+                    user: user,
+                    docId: habitoId,
                   })
-                  props.setIsEdit(true)
-                  props.setPagina(2)
+                  setIsEdit(true)
+                  setPagina(2)
                 }}
                 className="fa fa-pen"
               ></i>
               <i
                 onClick={() => {
                   if (window.confirm("Você deseja remover este hábito?"))
-                    removeDoc(
-                      "habitos",
-                      props.habitoId,
-                      props.setFeito,
-                      setErros
-                    )
+                    removeDoc("habitos", habitoId, setFeitoLista, setErros)
                 }}
                 className="fa fa-trash"
               ></i>
@@ -192,12 +224,12 @@ function Habito(props) {
           setConcluido(!concluido)
           setOrdem(ordem > 100 ? ordem - 100 : 100 + ordem)
           if (!concluido) {
-            // props.setHabitoConcluido(props.habitoId)
+            // setHabitoConcluido(habitoId)
             let doc = {
               data: firebase.firestore.Timestamp.fromDate(new Date()),
-              habito: props.habitoId,
+              habito: habitoId,
               quantidade: valor,
-              user: props.user,
+              user: user,
             }
             setFetchHistorico(true)
             createDoc(

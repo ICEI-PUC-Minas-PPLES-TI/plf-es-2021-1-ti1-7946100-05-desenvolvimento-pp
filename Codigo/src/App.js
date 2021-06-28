@@ -42,7 +42,6 @@ function App() {
   useEffect(() => {
     user ? setPagina(1) : setPagina(0)
   }, [user])
-  console.log("user", user)
 
   useEffect(() => {
     if (habitoCadastrado) {

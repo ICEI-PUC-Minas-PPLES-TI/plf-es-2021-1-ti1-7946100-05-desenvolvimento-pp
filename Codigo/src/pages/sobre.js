@@ -8,6 +8,14 @@ import FotoOctavio from "../assets/octavio.png"
 import FotoVitorJ from "../assets/vitorj.jpg"
 import FotoVitorX from "../assets/vitorx.jpg"
 
+let animationDelay = ""
+
+for (let i = 0; i < 7; i++) {
+  animationDelay += `div:nth-child(${3 + i}) {
+    animation-delay: ${0 + i * 0.3}s;
+  }`
+}
+
 const Container = styled.div`
   background-color: ${() => palheta.background};
   padding: 30px;
@@ -48,27 +56,7 @@ const Container = styled.div`
     animation: 1s fadeinfotoright 1s forwards;
   }
 
-  div:nth-child(3) {
-    animation-delay: 0s;
-  }
-  div:nth-child(4) {
-    animation-delay: 0.6s;
-  }
-  div:nth-child(5) {
-    animation-delay: 0.9s;
-  }
-  div:nth-child(6) {
-    animation-delay: 1.2s;
-  }
-  div:nth-child(7) {
-    animation-delay: 1.5s;
-  }
-  div:nth-child(8) {
-    animation-delay: 1.8s;
-  }
-  div:nth-child(9) {
-    animation-delay: 2.1s;
-  }
+  ${animationDelay}
 
   .componente {
     margin: 10px 0px;

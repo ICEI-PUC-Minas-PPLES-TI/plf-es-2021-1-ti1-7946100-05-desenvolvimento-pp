@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React from "react"
 import styled from "styled-components"
 import { palheta } from "../components/palheta"
 import * as Template from "../components/template"
@@ -9,7 +9,6 @@ import {
   Bar,
   Line,
   XAxis,
-  YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
@@ -120,7 +119,7 @@ function CadaHistorico({
   historicoHabitoId,
   setFeitoRemover,
 }) {
-  const [erros, setErros] = useState("")
+  const [, setErros] = useState("")
   const [novaQtde, setNovaQtde] = useState(quantidade)
   const [editar, setEditar] = useState(false)
   const [feito, setFeito] = useState(false)
@@ -134,7 +133,7 @@ function CadaHistorico({
 
   return (
     <Template.TextoDestaque
-      style={{ maxWidth: "400px", margin: "auto", margin: "15px auto" }}
+      style={{ maxWidth: "400px", margin: "15px auto" }}
     >
       <HistoricoLinha>
         <span>{transformarData(data)}</span>{" "}
@@ -228,7 +227,7 @@ const orderData = (historico, valor) => {
     }
   }
   let media = Math.round(qtde / historicoGrafico.length*10)/10
-  historicoGrafico.map(e => {
+  historicoGrafico.forEach(e => {
     e.media = media
     e.meta = valor
   })
@@ -245,7 +244,7 @@ function HistoricoHabitos({ user, habito, setPagina }) {
 
   useEffect(() => {
     if (emojiRef.current) emojiRef.current.innerHTML = habito.emoji
-  }, [emojiRef])
+  }, [emojiRef, habito.emoji])
 
   useEffect(() => {
     if (user !== null && habito !== "") {
@@ -260,7 +259,7 @@ function HistoricoHabitos({ user, habito, setPagina }) {
         setErros
       )
     }
-  }, [])
+  }, [habito, user])
 
   useEffect(() => {
     if (feitoRemover) {
@@ -276,7 +275,7 @@ function HistoricoHabitos({ user, habito, setPagina }) {
       )
       setFeitoRemover(false)
     }
-  }, [feitoRemover])
+  }, [feitoRemover, habito.habitoId, user])
 
   useEffect(() => {
     if (erros !== "") console.log("erros no fetch historico de habitos", erros)
@@ -285,7 +284,7 @@ function HistoricoHabitos({ user, habito, setPagina }) {
   useEffect(() => {
     if (historico.length > 0)
       setHistoricoGrafico(orderData(historico, habito.valor))
-  }, [JSON.stringify(historico)])
+  }, [historico, habito.valor])
 
   return (
     <Container>
@@ -353,15 +352,17 @@ function HistoricoHabitos({ user, habito, setPagina }) {
           </>
         )}
       </div>
+
       {!feito && (
         <Template.Body style={{ textAlign: "center" }}>
-          <div class="text-center">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
+          <div className="text-center">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
             </div>
           </div>
         </Template.Body>
       )}
+
       {feito && historico.length === 0 && (
         <Template.Body style={{ textAlign: "center" }}>
           Esse hábito ainda não foi concluído 🙄

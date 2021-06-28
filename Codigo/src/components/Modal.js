@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { signUp } from '../utils/utils';
-import * as Template from './template';
+import React, { useState } from "react"
+import styled from "styled-components"
+import { signUp } from "../utils/utils"
+import * as Template from "./template"
 
 const Background = styled.div`
   width: 100%;
@@ -11,7 +11,7 @@ const Background = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 10;
-`;
+`
 const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@ const ModalWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-`;
+`
 
 const ModalContent = styled.div`
   form {
@@ -90,166 +90,94 @@ const ModalContent = styled.div`
       left: 100px;
     }
   }
-`;
+`
 
-const ModalBackgroundES = styled.div`
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  background-color: black;
-  z-index: 10;
-`;
-
-const ModalBackgroundAS = styled.div`
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  background-color: blue;
-  z-index: 10;
-`;
-
-const ModalWrapperAS = styled.div`
-  justify-content: flex-start;
-  display: flex-box;
-  flex-orientation: column;
-  width: 400px;
-  height: 300px;
-
-  z-index: 20;
-  border-radius: 10px;
-  color: black;
-  background: #f5f5f5;
-
-  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  div {
-    width: 400px;
-  }
-  .headerAlteraSenha {
-    align-self: flex-start;
-    justify-content: center;
-    margin-bottom: 010px;
-  }
-  form {
-    align-self: center;
-    div {
-      width: 400px;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-    .btnEnviarAS {
-      padding: 10px;
-      font-size: 15px;
-    }
-    .closeButton {
-      color: black;
-      padding: 10px;
-      position: relative;
-      left: 100px;
-    }
-  }
-  #closeBtnAS,
-  #closeBtnES {
-    padding: 10px;
-    color: black;
-    position: absolute;
-    right: 2px;
-    top: -13px;
-  }
-`;
 
 export const Modal = ({ showModal, setShowModal }) => {
-  const [nomeCadastro, setNomeCadastro] = useState('');
-  const [emailCadastro, setEmailCadastro] = useState('');
-  const [senhaCadastro, setSenhaCadastro] = useState('');
+  const [, setNomeCadastro] = useState("")
+  const [emailCadastro, setEmailCadastro] = useState("")
+  const [senhaCadastro, setSenhaCadastro] = useState("")
   // const [confirmaSenhaCadastro, setConfirmaSenhaCadastro] = useState("");
-  const [, setErros] = useState('');
+  const [, setErros] = useState("")
   return (
     <>
       {showModal ? (
         <Background>
           <ModalWrapper showModal={showModal}>
             <ModalContent>
-                <div className="modal-header">
-                  <h3 className="modal-title">Cadastro</h3>
-                  <Template.Button
-                    onClick={() => setShowModal(false)}
-                    className="closeButton"
-                  >
-                    X
-                  </Template.Button>
+              <div className="modal-header">
+                <h3 className="modal-title">Cadastro</h3>
+                <Template.Button
+                  onClick={() => setShowModal(false)}
+                  className="closeButton"
+                >
+                  X
+                </Template.Button>
+              </div>
+              <div className="modal-body">
+                <div className="nome">
+                  <div className="inpt">
+                    <label className="label">Nome: </label>
+                    <Template.Input
+                      onChange={e => setNomeCadastro(e.target.value)}
+                      type="text"
+                      placeholder="Nome completo"
+                    ></Template.Input>
+                  </div>
                 </div>
-                <div className="modal-body">
-                  <div className="nome">
-                    <div className="inpt">
-                      <label className="label">Nome: </label>
-                      <Template.Input
-                        onChange={(e) => setNomeCadastro(e.target.value)}
-                        type="text"
-                        placeholder="Nome completo"
-                      ></Template.Input>
-                    </div>
+                <div className="email">
+                  <div className="inpt">
+                    <label className="label">Email: </label>
+                    <Template.Input
+                      onChange={e => setEmailCadastro(e.target.value)}
+                      type="email"
+                      placeholder="Email"
+                    ></Template.Input>
                   </div>
-                  <div className="email">
-                    <div className="inpt">
-                      <label className="label">Email: </label>
-                      <Template.Input
-                        onChange={(e) => setEmailCadastro(e.target.value)}
-                        type="email"
-                        placeholder="Email"
-                      ></Template.Input>
-                    </div>
+                </div>
+                <div className="senha">
+                  <div className="inpt">
+                    <label className="label">Senha: </label>
+                    <Template.Input
+                      onChange={e => setSenhaCadastro(e.target.value)}
+                      type="password"
+                      placeholder="Senha"
+                    ></Template.Input>
                   </div>
-                  <div className="senha">
-                    <div className="inpt">
-                      <label className="label">Senha: </label>
-                      <Template.Input
-                        onChange={(e) => setSenhaCadastro(e.target.value)}
-                        type="password"
-                        placeholder="Senha"
-                      ></Template.Input>
-                    </div>
+                </div>
+                <div className="confirma-senha">
+                  <div className="inpt">
+                    <label className="label">
+                      Confirme<br></br> a senha:{" "}
+                    </label>
+                    <Template.Input
+                      type="password"
+                      placeholder="Confirme a senha"
+                      onChange={
+                        e => null
+                        // setConfirmaSenhaCadastro(e.target.value)
+                      }
+                    ></Template.Input>
                   </div>
-                  <div className="confirma-senha">
-                    <div className="inpt">
-                      <label className="label">
-                        Confirme<br></br> a senha:{' '}
-                      </label>
-                      <Template.Input
-                        type="password"
-                        placeholder="Confirme a senha"
-                        onChange={
-                          (e) => null
-                          // setConfirmaSenhaCadastro(e.target.value)
-                        }
-                      ></Template.Input>
-                    </div>
-                  </div>
+                </div>
 
-                  <div className="btnSubmit">
-                    <div className="inpt">
-                      <Template.Button
-                        onClick={() =>
-                          {
-                          signUp(emailCadastro, senhaCadastro, setErros)
-                        }
-                        }
-                        id="btnEnviarCadastro"
-                      >
-                        Enviar
-                      </Template.Button>
-                    </div>
+                <div className="btnSubmit">
+                  <div className="inpt">
+                    <Template.Button
+                      onClick={() => {
+                        signUp(emailCadastro, senhaCadastro, setErros)
+                      }}
+                      id="btnEnviarCadastro"
+                    >
+                      Enviar
+                    </Template.Button>
                   </div>
                 </div>
+              </div>
             </ModalContent>
           </ModalWrapper>
         </Background>
       ) : null}
     </>
-  );
-};
+  )
+}

@@ -10,7 +10,6 @@ import {
   getHourAndMinuteFromFirebaseDate,
 } from "../utils/utils"
 
-
 export const BodyPage = styled.div`
   background-color: ${() => palheta.background};
   padding: 30px;
@@ -184,19 +183,20 @@ export const BodyPage = styled.div`
   }
 `
 
-function EmojiOnBar(props) {
+function EmojiOnBar({ emoji, streak }) {
   const emojiRef = useRef(null)
+
   useEffect(() => {
-    if (emojiRef.current) emojiRef.current.innerHTML = props.emoji
-  }, [emojiRef, props.emoji])
-  console.log(props.emoji, props.streak)
+    if (emojiRef.current) emojiRef.current.innerHTML = emoji
+  }, [emojiRef, emoji])
+
   return (
     <div className="EmojiStreak">
-      <div className="EmojiConcluido" ref={emojiRef} key={props.key}>
-        {props.emoji}
+      <div className="EmojiConcluido" ref={emojiRef}>
+        {emoji}
       </div>
       <span className="FireStreak">
-        {props.streak > 0 && props.streak} <i className="fas fa-fire-alt "></i>
+        {streak > 0 ? streak : 1} <i className="fas fa-fire-alt "></i>
       </span>
     </div>
   )
@@ -208,6 +208,47 @@ function EmojiList(props) {
   ))
 }
 
+function atualizarHabitosComConcluidos(
+  habitos,
+  habitosConcluidos,
+  setHabitos,
+  setCarregarHabitos
+) {
+  let habitosAtualizados = []
+  let habitoFoiConcluido
+
+  habitos.forEach(f => {
+    habitoFoiConcluido = false
+    habitosConcluidos.forEach(e => {
+      if (f.docId === e.habito && !habitoFoiConcluido) {
+        habitoFoiConcluido = true
+        if (e.streak > 0) {
+          habitosAtualizados.push({
+            ...f,
+            concluido: true,
+            quantidade: e.quantidade,
+            concluidoId: e.docId,
+            streak: e.streak,
+          })
+        } else {
+          habitosAtualizados.push({
+            ...f,
+            concluido: true,
+            quantidade: e.quantidade,
+            concluidoId: e.docId,
+          })
+        }
+      }
+    })
+    if (!habitoFoiConcluido) {
+      if (f.concluido) f.concluido = false
+      habitosAtualizados.push(f)
+    }
+  })
+  setHabitos(habitosAtualizados)
+  setCarregarHabitos(true)
+}
+
 function ListaDehabitos(props) {
   const [feitoLerHabito, setFeitoLerHabitos] = useState(false)
   const [feitoLerHistorico, setFeitoLerHistorico] = useState(false)
@@ -216,44 +257,9 @@ function ListaDehabitos(props) {
   const [habitosConcluidos, setHabitosConcluidos] = useState([])
   const [habitos, setHabitos] = useState([])
   const [atualizarHabitoLinha, setAtualizarHabitoLinha] = useState(false)
-  const [feito, setFeito] = useState(false)
+  const [, setFeito] = useState(false)
   const [feitoremover, setFeitoremover] = useState(false)
 
-  function atualizarHabitosComCocluidos() {
-    let habitosAtualizados = []
-    let habitoFoiConcluido
-    habitos.map(f => {
-      habitoFoiConcluido = false
-      habitosConcluidos.map(e => {
-        if (f.docId === e.habito && !habitoFoiConcluido) {
-          habitoFoiConcluido = true
-          if (e.streak > 0) {
-            habitosAtualizados.push({
-              ...f,
-              concluido: true,
-              quantidade: e.quantidade,
-              concluidoId: e.docId,
-              streak: e.streak,
-            })
-          } else {
-            habitosAtualizados.push({
-              ...f,
-              concluido: true,
-              quantidade: e.quantidade,
-              concluidoId: e.docId,
-            })
-          }
-        }
-      })
-      if (!habitoFoiConcluido) {
-        let atualizarHabito = f
-        if (f.concluido) f.concluido = false
-        habitosAtualizados.push(f)
-      }
-    })
-    setHabitos(habitosAtualizados)
-    setCarregarHabitos(true)
-  }
 
   useEffect(() => {
     readDocsUmaCondicao(
@@ -286,20 +292,30 @@ function ListaDehabitos(props) {
       setFeitoLerHistorico,
       setErros
     )
-  }, [])
+  }, [props.user])
 
   useEffect(() => {
     if (feitoLerHabito && feitoLerHistorico) {
-      atualizarHabitosComCocluidos()
+      atualizarHabitosComConcluidos(
+        habitos,
+        habitosConcluidos,
+        setHabitos,
+        setCarregarHabitos
+      )
     }
-  }, [habitosConcluidos, feitoLerHistorico, feitoLerHabito])
+  }, [feitoLerHistorico, feitoLerHabito])
 
   useEffect(() => {
     if (atualizarHabitoLinha) {
-      atualizarHabitosComCocluidos()
+      atualizarHabitosComConcluidos(
+        habitos,
+        habitosConcluidos,
+        setHabitos,
+        setCarregarHabitos
+      )
       setAtualizarHabitoLinha(false)
     }
-  }, [atualizarHabitoLinha])
+  }, [atualizarHabitoLinha, habitos, habitosConcluidos])
 
   useEffect(() => {
     if (feitoremover) {
@@ -313,7 +329,8 @@ function ListaDehabitos(props) {
       )
       setFeitoremover(false)
     }
-  }, [feitoremover])
+  }, [feitoremover, props.user])
+
   return (
     <BodyPage className="container">
       <main>
@@ -321,9 +338,9 @@ function ListaDehabitos(props) {
 
         {!carregarHabitos && (
           <Template.Body style={{ textAlign: "center" }}>
-            <div class="text-center">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+            <div className="text-center">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
             </div>
           </Template.Body>
@@ -360,18 +377,18 @@ function ListaDehabitos(props) {
                   setHabitoSelecionado={props.setHabitoSelecionado}
                   setPagina={props.setPagina}
                   setIsEdit={props.setIsEdit}
-                  setFeito={setFeitoremover}
-                  concluido={e.concluido ?? false}
+                  setFeitoLista={setFeitoremover}
+                  concluidoLista={e.concluido ?? false}
                   concluidoId={e.concluidoId ?? ""}
                   habitoId={e.docId}
                   user={props.user}
                   key={i}
-                  valor={e.meta}
+                  valorLista={e.meta}
                   unidade={e.unidade}
                   horario={e["horario"] ?? e["horário"]}
                   nome={e.nome}
                   emoji={e.emoji}
-                  ordem={i + 1}
+                  ordemLista={i + 1}
                   ambiente={e.ambiente}
                   meta={e.meta}
                   periodicidade={e.periodicidade}
@@ -384,7 +401,7 @@ function ListaDehabitos(props) {
         <section className="End">
           {carregarHabitos && habitos.length > 0 && (
             <div className="ProgressoCard">
-              <h3 className="ProgressoDia"></h3>
+              {/* <h3 className="ProgressoDia"></h3> */}
               <h4 className="ProgressoTitulo">
                 {Math.round((habitosConcluidos.length / habitos.length) * 100)}{" "}
                 % Completo

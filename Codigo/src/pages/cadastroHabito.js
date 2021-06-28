@@ -33,15 +33,17 @@ export function EmojiButton(props) {
   const [emoji, setEmoji] = useState(props.emoji || "&#128521")
   const ulRef = useRef(null)
   const divRef = useRef(null)
+  const [emojiRange2, ] = useState(() => {
+    let emojiRange2b = []
 
-  let emojiRange2 = []
-
-  for (var i = 0; i < emojiRange.length; i++) {
-    var range = emojiRange[i]
-    for (var x = range[0]; x < range[1]; x++) {
-      emojiRange2.push(x)
+    for (var i = 0; i < emojiRange.length; i++) {
+      var range = emojiRange[i]
+      for (var x = range[0]; x < range[1]; x++) {
+        emojiRange2b.push(x)
+      }
     }
-  }
+    return emojiRange2b
+  })
 
   useEffect(() => {
     let res = {
@@ -55,11 +57,11 @@ export function EmojiButton(props) {
 
   useEffect(() => {
     if (ulRef.current) {
-      emojiRange2.map((e, i) => {
+      emojiRange2.forEach((e, i) => {
         document.getElementById("emoji-" + i).innerHTML = "&#" + e
       })
     }
-  }, [ulRef.current])
+  }, [emojiRange2])
 
   useEffect(() => {
     if (divRef.current) divRef.current.innerHTML = emoji
@@ -80,13 +82,13 @@ export function EmojiButton(props) {
       </Template.Button>
       <ul
         ref={ulRef}
-        class="dropdown-menu"
+        className="dropdown-menu"
         aria-labelledby="dropdownMenuButton1"
       >
         {emojiRange2.map((e, i) => (
           <li key={i}>
-            <a
-              class="dropdown-item"
+            <button
+              className="dropdown-item"
               id={"emoji-" + i}
               onClick={() => {
                 setEmoji("&#" + e)
@@ -94,7 +96,7 @@ export function EmojiButton(props) {
               href="#"
             >
               {"&#" + e + ""}
-            </a>
+            </button>
           </li>
         ))}
       </ul>
@@ -198,6 +200,7 @@ class CadastroHabito extends Component {
         "habitos",
         this.state,
         this.props.setHabitoCadastrado,
+        () => {},
         () => {}
       ).then(() => {
         this.setState(this.initialState)
