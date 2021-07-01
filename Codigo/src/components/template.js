@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import Icon from './logo'
+import Icon2 from './logoListing'
+import Icon3 from './logoCheck'
+import Icon4 from './logoListing2'
 import { palheta } from './palheta';
 
 export const Header1 = styled.h1`
@@ -256,7 +259,7 @@ export const Logo = styled.h1`
   line-height: 28px;
   margin: 0px;
   text-decoration: underline;
-  color: ${(props) => palheta.logo};
+  color: ${palheta.logo};
   text-shadow: -2px -2px 3px #ffff6a, 2px 2px 3px #776a22;
 `;
 
@@ -337,6 +340,9 @@ function Template() {
           <BarraDeProgressoCompleta valor={72} />
         </BarraDeProgressoVazia>
         <Icon size={72}/>
+        <Icon2 size={72}/>
+        <Icon3 size={72}/>
+        <Icon4 size={72}/>
       </div>
       <div className="colors-parte">
         <Header2>Colors</Header2>

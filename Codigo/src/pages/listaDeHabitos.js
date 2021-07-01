@@ -10,6 +10,19 @@ import {
   getHourAndMinuteFromFirebaseDate,
 } from "../utils/utils"
 
+let animationDelay = ""
+
+for (let i = 0; i < 15; i++) {
+  animationDelay += `
+  .Habito.HabitoConcluido:nth-child(${i + 1}) {
+    animation-delay: ${0 + i * 0.2}s;
+  }
+  .Habito:not(.HabitoConcluido):nth-child(${i + 1}) {
+    animation-delay: ${0 + i * 0.2}s;
+  }
+  `
+}
+
 export const BodyPage = styled.div`
   background-color: ${() => palheta.background};
   padding: 30px;
@@ -18,6 +31,28 @@ export const BodyPage = styled.div`
   height: 100%;
   margin: auto;
   box-shadow: ${() => palheta.bodyBoxShadow};
+
+  @keyframes fadeinTop {
+    from {
+      opacity: 0;
+      margin-right: -50px;
+    }
+    to {
+      opacity: 1;
+      margin-right: 0px;
+    }
+  }
+
+  @keyframes fadeinTopConcluido {
+    from {
+      opacity: 0;
+      margin-right: -50px;
+    }
+    to {
+      opacity: 0.3;
+      margin-right: 0px;
+    }
+  }
 
   main {
     display: flex;
@@ -31,16 +66,25 @@ export const BodyPage = styled.div`
     flex-direction: column;
   }
 
+  ${animationDelay}
+
   .Habito {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 30px;
     margin-bottom: 30px;
+    animation: 1s fadeinTop 0s forwards;
+    opacity: 0;
   }
+
+  .Habito.HabitoConcluido {
+    animation: 1s fadeinTopConcluido 0s forwards;
+  }
+
   //Concluir Hábito -> Deixar transparente
   .HabitoConcluido {
-    opacity: 0.3;
+    opacity: 0;
     transition-duration: 0.5s;
   }
 
@@ -249,13 +293,22 @@ function atualizarHabitosComConcluidos(
   setCarregarHabitos(true)
 }
 
-function ListaDehabitos(props) {
+
+function ListaDehabitos({
+  user,
+  setPagina,
+  setHabitoSelecionado,
+  setIsEdit,
+  habitoConcluido,
+  setHabitoConcluido,
+  habitos,
+  setHabitos
+}) {
   const [feitoLerHabito, setFeitoLerHabitos] = useState(false)
   const [feitoLerHistorico, setFeitoLerHistorico] = useState(false)
   const [carregarHabitos, setCarregarHabitos] = useState(false)
   const [, setErros] = useState([])
   const [habitosConcluidos, setHabitosConcluidos] = useState([])
-  const [habitos, setHabitos] = useState([])
   const [atualizarHabitoLinha, setAtualizarHabitoLinha] = useState(false)
   const [, setFeito] = useState(false)
   const [feitoremover, setFeitoremover] = useState(false)
@@ -265,7 +318,7 @@ function ListaDehabitos(props) {
     readDocsUmaCondicao(
       "habitos",
       "user",
-      props.user,
+      user,
       setHabitos,
       setFeitoLerHabitos,
       setErros
@@ -285,14 +338,14 @@ function ListaDehabitos(props) {
     readDocsDuasCondicoesData(
       "historico_habito",
       "user",
-      props.user,
+      user,
       "data",
       data,
       setHabitosConcluidos,
       setFeitoLerHistorico,
       setErros
     )
-  }, [props.user])
+  }, [user])
 
   useEffect(() => {
     if (feitoLerHabito && feitoLerHistorico) {
@@ -322,14 +375,14 @@ function ListaDehabitos(props) {
       readDocsUmaCondicao(
         "habitos",
         "user",
-        props.user,
+        user,
         setHabitos,
         setFeito,
         setErros
       )
       setFeitoremover(false)
     }
-  }, [feitoremover, props.user])
+  }, [feitoremover, user])
 
   return (
     <BodyPage className="container">
@@ -374,14 +427,14 @@ function ListaDehabitos(props) {
                   habitosConcluidos={habitosConcluidos}
                   setHabitosConcluidos={setHabitosConcluidos}
                   setAtualizarHabitoLinha={setAtualizarHabitoLinha}
-                  setHabitoSelecionado={props.setHabitoSelecionado}
-                  setPagina={props.setPagina}
-                  setIsEdit={props.setIsEdit}
+                  setHabitoSelecionado={setHabitoSelecionado}
+                  setPagina={setPagina}
+                  setIsEdit={setIsEdit}
                   setFeitoLista={setFeitoremover}
                   concluidoLista={e.concluido ?? false}
                   concluidoId={e.concluidoId ?? ""}
                   habitoId={e.docId}
-                  user={props.user}
+                  user={user}
                   key={i}
                   valorLista={e.meta}
                   unidade={e.unidade}
@@ -393,6 +446,7 @@ function ListaDehabitos(props) {
                   meta={e.meta}
                   periodicidade={e.periodicidade}
                   recompensa={e.recompensa}
+                  setHabitoConcluido={setHabitoConcluido}
                 />
               ))}
           </div>
@@ -423,8 +477,8 @@ function ListaDehabitos(props) {
             <Template.Button
               className="Button"
               onClick={() => {
-                props.setIsEdit(false)
-                props.setPagina(2)
+                setIsEdit(false)
+                setPagina(2)
               }}
             >
               Adicionar Hábito

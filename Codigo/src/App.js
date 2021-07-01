@@ -29,6 +29,8 @@ function App() {
   const [habitoSelecionado, setHabitoSelecionado] = useState(null)
   const [isEdit, setIsEdit] = useState(false)
   const [habitoCadastrado, setHabitoCadastrado] = useState(false)
+  const [habitoConcluido, setHabitoConcluido] = useState(false)
+  const [habitos, setHabitos] = useState([])
 
   useEffect(() => {
     const unlisten = auth.onAuthStateChanged(authUser => {
@@ -38,6 +40,9 @@ function App() {
       unlisten()
     }
   })
+
+  useEffect(() => setHabitoConcluido(false), [habitoConcluido])
+  useEffect(() => setHabitoCadastrado(false), [habitoConcluido])
 
   useEffect(() => {
     user ? setPagina(1) : setPagina(0)
@@ -62,6 +67,9 @@ function App() {
         setShowModalAlterarSenha={setShowModalAlterarSenha}
         user={user != null ? user.uid : null}
         setPagina={setPagina}
+        habitoConcluido={habitoConcluido}
+        habitoCadastrado={habitoCadastrado}
+        habitos={habitos}
       />
       {pagina === 0 && <Home setShowModal={setShowModal} />}
       {pagina === 1 && (
@@ -70,6 +78,10 @@ function App() {
           setPagina={setPagina}
           setHabitoSelecionado={setHabitoSelecionado}
           setIsEdit={setIsEdit}
+          habitoConcluido={habitoConcluido}
+          setHabitoConcluido={setHabitoConcluido}
+          habitos={habitos}
+          setHabitos={setHabitos}
         />
       )}
       {pagina === 2 && (
@@ -86,6 +98,7 @@ function App() {
         <HistoricoHabitos
           user={user != null ? user.uid : null}
           habito={habitoSelecionado}
+          habitos={habitos}
           setPagina={setPagina}
         />
       )}

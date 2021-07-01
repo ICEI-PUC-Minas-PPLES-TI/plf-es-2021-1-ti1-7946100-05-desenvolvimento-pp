@@ -4,6 +4,7 @@ import * as Template from "../components/template"
 import FotoJoao from "../assets/Selection_107.png"
 import FotoAna from "../assets/anac.jpg"
 import FotoGustavoF from "../assets/gustavof.jpg"
+import FotoGustavoN from "../assets/GustavoN.jpg"
 import FotoOctavio from "../assets/octavio.png"
 import FotoVitorJ from "../assets/vitorj.jpg"
 import FotoVitorX from "../assets/vitorx.jpg"
@@ -115,7 +116,7 @@ function Sobre() {
       </div>
       <div className="componente">
         <span>gustavo.cn121@gmail.com</span> - Gustavo Nogueira
-        <img className="foto" alt="Gustavo Nogueira" />
+        <img className="foto" src={FotoGustavoN} alt="Gustavo Nogueira" />
       </div>
       <div className="componente">
         <img className="foto" src={FotoJoao} alt="João Ricardo Lemos" />

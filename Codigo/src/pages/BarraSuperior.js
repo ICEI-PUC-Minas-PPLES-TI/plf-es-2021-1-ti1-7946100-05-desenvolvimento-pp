@@ -7,6 +7,8 @@ import { Modal } from "../components/Modal"
 import { ModalAS } from "../components/ModalAlterarSenha"
 import { ModalES } from "../components/ModalEsqueciSenha"
 import Logo from "../components/logo"
+import LogoCheck from "../components/logoCheck"
+import LogoListing from "../components/logoListing2"
 
 const Navbar = styled.nav`
   padding: 20px;
@@ -97,9 +99,25 @@ function BarraSuperior(props) {
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
   const [mmo, setmmo] = useState("")
+  const [animacaoConcluido, setAnimacaoConcluido] = useState(false)
+  const [animacaoCadastrdado, setAnimacaoCadastrado] = useState(false)
   const [openNavegacao, setOpenNavegacao] = useState(false)
   const wrapperRef = useRef(null)
   useOutsideAlerter(wrapperRef, setOpenNavegacao)
+
+  useEffect(() => {
+    if (props.habitoConcluido) {
+      setAnimacaoConcluido(true)
+      setTimeout(() => setAnimacaoConcluido(false), 1500)
+    }
+  }, [props.habitoConcluido])
+
+  useEffect(() => {
+    if (props.habitoCadastrado) {
+      setAnimacaoCadastrado(true)
+      setTimeout(() => setAnimacaoCadastrado(false), 1700)
+    }
+  }, [props.habitoCadastrado])
 
   const menuMaisOpcoes = mmo => {
     if (mmo === "Alterar minha senha") {
@@ -153,11 +171,15 @@ function BarraSuperior(props) {
 
   return (
     <Navbar>
-      <Logo
-        size={72}
-        animated={false}
-        onClick={() => (props.user ? props.setPagina(1) : props.setPagina(0))}
-      />
+      {!animacaoConcluido && !animacaoCadastrdado && (
+        <Logo
+          size={72}
+          animated={false}
+          onClick={() => (props.user ? props.setPagina(1) : props.setPagina(0))}
+        />
+      )}
+      {animacaoConcluido && <LogoCheck size={72} />}
+      {animacaoCadastrdado && <LogoListing size={72} />}
       {!props.user && (
         <div>
           <Template.Input
@@ -230,15 +252,19 @@ function BarraSuperior(props) {
               <div ref={wrapperRef} className="dropdown-navegacao">
                 <ul>
                   <li onClick={() => navegacao(1)}>Hábitos</li>
-                  <li onClick={() => navegacao(1)}>Historico</li>
+                  {props.habitos.length > 0 && <li onClick={() => navegacao(4)}>Historico</li>}
                   <li onClick={() => navegacao(5)}>Acompanhamento</li>
                   {/* <li>Mais Informações</li> */}
                   <li onClick={() => navegacao(6)}>Sobre</li>
-                  {/* <li onClick={() => navegacao(3)}>Template</li> */}
-                  <li onClick={() => {
-                    logout()
-                    setOpenNavegacao(false)
-                    }}>Sair</li>
+                  <li onClick={() => navegacao(3)}>Template</li>
+                  <li
+                    onClick={() => {
+                      logout()
+                      setOpenNavegacao(false)
+                    }}
+                  >
+                    Sair
+                  </li>
                 </ul>
               </div>
             )}

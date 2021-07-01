@@ -36,6 +36,7 @@ function Habito({
   meta,
   periodicidade,
   recompensa,
+  setHabitoConcluido
 }) {
   const emojiRef = useRef(null)
   const [concluido, setConcluido] = useState(concluidoLista)
@@ -239,6 +240,7 @@ function Habito({
               setErros,
               setHistoricoHabitoDoc
             )
+            setHabitoConcluido(true)
           } else {
             removeDoc(
               "historico_habito",

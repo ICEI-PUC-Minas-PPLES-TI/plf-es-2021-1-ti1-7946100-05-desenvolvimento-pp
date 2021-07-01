@@ -15,6 +15,15 @@ import {
   ResponsiveContainer,
 } from "recharts"
 
+let animationDelay = ""
+
+for (let i = 0; i < 15; i++) {
+  animationDelay += `
+   .historico-linha:nth-child(${i + 1}) {
+    animation-delay: ${0 + i * 0.3}s;
+  }`
+}
+
 const Container = styled.div`
   background-color: ${() => palheta.background};
   padding: 30px;
@@ -26,6 +35,22 @@ const Container = styled.div`
   flex-flow: column;
   justify-content: space-between;
   box-shadow: ${() => palheta.bodyBoxShadow};
+
+  .historico-linha {
+    opacity: 0;
+    animation: 1s fadeIn 0s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  ${animationDelay}
 
   .lista-titulo {
     max-width: 400px;
@@ -61,15 +86,46 @@ const Container = styled.div`
     }
   }
 
+  .fa-caret-down {
+    margin-left: 10px;
+  }
+
   .grafico-historico {
     height: 300px;
     max-width: 440px;
     width: 100%;
     margin: 100px auto 50px;
   }
+
+  .dropdown-navegacao {
+    height: auto;
+    padding: 10px 15px;
+    z-index: 5;
+    background: ${palheta.background};
+    border-radius: 4px;
+    position: absolute;
+    margin-left: 210px;
+    box-shadow: ${palheta.boxDropShadow};
+
+    ul {
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px;
+      color: ${palheta.text};
+
+      li {
+        cursor: pointer;
+        padding: 3px 0px;
+      }
+
+      li:hover {
+        filter: opacity(0.6);
+      }
+    }
+  }
 `
 
-const HistoricoLinha = styled.div`
+const HistoricoLinha = styled.div.attrs({ class: "historico-linha" })`
   width: 100%;
   flex-direction: row;
   justify-content: space-around;
@@ -133,6 +189,7 @@ function CadaHistorico({
 
   return (
     <Template.TextoDestaque
+      className="historico-linha"
       style={{ maxWidth: "400px", margin: "15px auto" }}
     >
       <HistoricoLinha>
@@ -226,7 +283,7 @@ const orderData = (historico, valor) => {
       })
     }
   }
-  let media = Math.round(qtde / historicoGrafico.length*10)/10
+  let media = Math.round((qtde / historicoGrafico.length) * 10) / 10
   historicoGrafico.forEach(e => {
     e.media = media
     e.meta = valor
@@ -234,32 +291,41 @@ const orderData = (historico, valor) => {
   return historicoGrafico
 }
 
-function HistoricoHabitos({ user, habito, setPagina }) {
+function HistoricoHabitos({ user, habito, setPagina, habitos }) {
   const [historico, setHistorico] = useState([])
   const [erros, setErros] = useState("")
   const [feito, setFeito] = useState(false)
   const [feitoRemover, setFeitoRemover] = useState(false)
   const [historicoGrafico, setHistoricoGrafico] = useState([])
+  const [openHabitos, setOpenHabitos] = useState(false)
+  const [habitoSelecionado, setHabitoSelecionado] = useState(habito?? habitos[0])
   const emojiRef = useRef(null)
 
   useEffect(() => {
-    if (emojiRef.current) emojiRef.current.innerHTML = habito.emoji
-  }, [emojiRef, habito.emoji])
+    if (emojiRef.current) emojiRef.current.innerHTML = habitoSelecionado.emoji
+  }, [emojiRef, habitoSelecionado.emoji])
 
   useEffect(() => {
-    if (user !== null && habito !== "") {
+    if (user !== null && habitoSelecionado !== "") {
+      console.log('habitoSelecionado', habitoSelecionado)
+      setHistorico([])
+      setErros("")
+      setFeito(false)
+      setFeitoRemover(false)
+      setHistoricoGrafico([])
+      setOpenHabitos(false)
       readDocsDuasCondicoes(
         "historico_habito",
         "user",
         user,
         "habito",
-        habito.habitoId,
+        habitoSelecionado.habitoId ?? habitoSelecionado.docId,
         setHistorico,
         setFeito,
         setErros
       )
     }
-  }, [habito, user])
+  }, [habitoSelecionado, user])
 
   useEffect(() => {
     if (feitoRemover) {
@@ -268,14 +334,14 @@ function HistoricoHabitos({ user, habito, setPagina }) {
         "user",
         user,
         "habito",
-        habito.habitoId,
+        habitoSelecionado.habitoId ?? habitoSelecionado.docId,
         setHistorico,
         setFeito,
         setErros
       )
       setFeitoRemover(false)
     }
-  }, [feitoRemover, habito.habitoId, user])
+  }, [feitoRemover, habitoSelecionado.habitoId, user])
 
   useEffect(() => {
     if (erros !== "") console.log("erros no fetch historico de habitos", erros)
@@ -283,8 +349,8 @@ function HistoricoHabitos({ user, habito, setPagina }) {
 
   useEffect(() => {
     if (historico.length > 0)
-      setHistoricoGrafico(orderData(historico, habito.valor))
-  }, [historico, habito.valor])
+      setHistoricoGrafico(orderData(historico, habitoSelecionado.valor))
+  }, [historico, habitoSelecionado.valor])
 
   return (
     <Container>
@@ -292,18 +358,35 @@ function HistoricoHabitos({ user, habito, setPagina }) {
         <Template.Header1 className="Headers">
           Historico de Hábitos
         </Template.Header1>
-        <Template.Header2 style={{ textAlign: "center" }}>
+        <Template.Header2
+          style={{ textAlign: "center", cursor: "pointer" }}
+          onClick={() => setOpenHabitos(!openHabitos)}
+        >
           <Template.Emoji ref={emojiRef} className="Emoji">
-            {habito.emoji}
+            {habitoSelecionado.emoji}
           </Template.Emoji>
-          {habito.nome}
+          {habitoSelecionado.nome}
+          <i className="fas fa-caret-down" />
         </Template.Header2>
+        {openHabitos && (
+          <div className="dropdown-navegacao">
+            <ul>
+              {habitos.map((e, i) => (
+                <li key={i} onClick={() => setHabitoSelecionado(e)}>
+                  {e.nome}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {feito && historico.length > 0 && (
           <>
             <div className="lista-titulo">
               <span style={{ width: "120px", textAlign: "center" }}>Data</span>
-              <span style={{ width: "70px" }}>Qtde ({habito.unidade})</span>
+              <span style={{ width: "70px" }}>
+                Qtde ({habitoSelecionado.unidade})
+              </span>
               <span style={{ width: "60px" }} />
             </div>
             <div className="lista-historico">
@@ -371,7 +454,7 @@ function HistoricoHabitos({ user, habito, setPagina }) {
 
       <div className="navegacao">
         <Template.Button className="Button" onClick={() => setPagina(2)}>
-          Adicionar Hábito
+          Histórico do Hábito
         </Template.Button>
         <Template.Link onClick={() => setPagina(1)}>Voltar</Template.Link>
       </div>
