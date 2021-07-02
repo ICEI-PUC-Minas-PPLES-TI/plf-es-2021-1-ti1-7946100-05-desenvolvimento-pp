@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import Icon from './logo'
-import Icon2 from './logoListing'
-import Icon3 from './logoCheck'
-import Icon4 from './logoListing2'
-import { palheta } from './palheta';
+import styled from "styled-components"
+import Icon from "./logo"
+import Icon2 from "./logoListing"
+import Icon3 from "./logoCheck"
+import Icon4 from "./logoListing2"
+import { palheta } from "./palheta"
 
 export const Header1 = styled.h1`
   margin-bottom: 20px;
@@ -16,8 +16,8 @@ export const Header1 = styled.h1`
   letter-spacing: -0.02em;
   text-align: center;
 
-  color: ${() => palheta.text};
-`;
+  color: ${palheta.text};
+`
 
 export const Header2 = styled.h2`
   margin-top: 20px;
@@ -30,10 +30,10 @@ export const Header2 = styled.h2`
   line-height: 23px;
   letter-spacing: -0.02em;
 
-  color: ${() => palheta.text};
-`;
+  color: ${palheta.text};
+`
 
-export const Header3 = styled.h3``;
+export const Header3 = styled.h3``
 
 export const Body = styled.div`
   font-family: Work Sans;
@@ -42,12 +42,12 @@ export const Body = styled.div`
   font-size: 14px;
   line-height: 17px;
   letter-spacing: -0.02em;
-  color: ${() => palheta.text};
-`;
+  color: ${palheta.text};
+`
 
 const BodyDiv = styled.div`
-  background-color: ${() => palheta.background};
-  box-shadow: ${() => palheta.bodyBoxShadow};
+  background-color: ${palheta.background};
+  box-shadow: ${palheta.bodyBoxShadow};
   margin: auto;
   max-width: 600px;
   height: 100%;
@@ -80,7 +80,7 @@ const BodyDiv = styled.div`
     margin-bottom: 40px;
     display: inline-block;
   }
-`;
+`
 
 export const Link = styled.a`
   font-family: Work Sans;
@@ -94,13 +94,13 @@ export const Link = styled.a`
 
   margin: 10px;
 
-  color: ${() => palheta.text};
-`;
+  color: ${palheta.text};
+`
 
 export const Button = styled.button`
   /* Background */
-  background: ${() => palheta.background};
-  box-shadow: ${() => palheta.boxDropShadow};
+  background: ${palheta.background};
+  box-shadow: ${palheta.boxDropShadow};
   border-radius: 5px;
   border: none;
 
@@ -117,15 +117,15 @@ export const Button = styled.button`
   letter-spacing: -0.02em;
 
   /* Text - Important */
-  color: ${() => palheta.textImportant};
+  color: ${palheta.textImportant};
   :active {
     box-shadow: 2px 2px 5px #c3cad0, -2px -2px 5px #ffffff;
   }
-`;
+`
 
 export const Emoji = styled.div`
-  background: ${() => palheta.background};
-  box-shadow: ${() => palheta.boxDropShadow};
+  background: ${palheta.background};
+  box-shadow: ${palheta.boxDropShadow};
   border-radius: 15px;
   width: 36px;
   height: 36px;
@@ -134,13 +134,13 @@ export const Emoji = styled.div`
   place-items: center;
   padding: 3px 3px 3px 5px;
   font-size: 20px;
-`;
+`
 
 export const Card = styled.div`
   min-width: 100px;
   min-height: 100px;
   /* Background */
-  background: ${() => palheta.background};
+  background: ${palheta.background};
 
   /* Drop shadow (dark) */
 
@@ -154,8 +154,8 @@ export const Card = styled.div`
   font-size: 13px;
   line-height: 15px;
   letter-spacing: -0.02em;
-  color: ${() => palheta.text};
-`;
+  color: ${palheta.text};
+`
 
 export const Label = styled.label`
   font-family: Work Sans;
@@ -169,7 +169,7 @@ export const Label = styled.label`
   letter-spacing: -0.02em;
 
   color: rgba(0, 0, 0, 0.65);
-`;
+`
 
 export const Input = styled.input`
   margin: 10px;
@@ -178,8 +178,8 @@ export const Input = styled.input`
   max-width: 200px;
   min-width: 50px;
 
-  background: ${() => palheta.background};
-  box-shadow: ${() => palheta.boxInnerShadow};
+  background: ${palheta.background};
+  box-shadow: ${palheta.boxInnerShadow};
 
   border-radius: 5px;
   /* Body */
@@ -191,56 +191,56 @@ export const Input = styled.input`
   letter-spacing: -0.02em;
   border: none;
 
-  color: ${() => palheta.text};
+  color: ${palheta.text};
 
   -webkit-appearance: none;
-`;
+`
 
 const TextoDestaqueDiv = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 10px;
-`;
+`
 
 export const Linha = styled.div`
   height: 1px;
   max-width: 400px;
   min-width: 60px;
   margin-top: 4px;
-  border: 0.1px solid ${() => palheta.background};
+  border: 0.1px solid ${palheta.background};
   /*   box-shadow: 10px 10px 20px #626262, -10px -10px 20px #ffffff;
  */
   filter: drop-shadow(1px 4px 6px black);
-`;
+`
 
 export function TextoDestaque(props) {
   return (
     <TextoDestaqueDiv {...props}>
       <Body
         style={{
-          margin: '0px',
-          padding: '0 8px',
-          fontSize: '16px',
-          fontWeight: '500',
+          margin: "0px",
+          padding: "0 8px",
+          fontSize: "16px",
+          fontWeight: "500",
         }}
       >
         {props.children}
       </Body>
       <Linha />
     </TextoDestaqueDiv>
-  );
+  )
 }
 
 export function NewInputs(props) {
   return (
-    <div style={{ margin: '10px', maxWidth: '180px' }}>
+    <div style={{ margin: "10px", maxWidth: "180px" }}>
       <input
         style={{
-          margin: '0px 10px -12px 0px',
-          maxWidth: '180px',
-          width: '100%',
-          paddingLeft: '8px',
-          border: 'none',
+          margin: "0px 10px -12px 0px",
+          maxWidth: "180px",
+          width: "100%",
+          paddingLeft: "8px",
+          border: "none",
           background: palheta.background,
           color: palheta.text,
         }}
@@ -248,7 +248,7 @@ export function NewInputs(props) {
       />
       <Linha />
     </div>
-  );
+  )
 }
 
 export const Logo = styled.h1`
@@ -261,7 +261,7 @@ export const Logo = styled.h1`
   text-decoration: underline;
   color: ${palheta.logo};
   text-shadow: -2px -2px 3px #ffff6a, 2px 2px 3px #776a22;
-`;
+`
 
 export const BarraDeProgressoVazia = styled.div`
   max-width: 440px;
@@ -273,24 +273,24 @@ export const BarraDeProgressoVazia = styled.div`
   background: linear-gradient(90deg, #afaaaa);
   /* Drop shadow (dark) */
 
-  box-shadow: ${() => palheta.boxDropShadow};
+  box-shadow: ${palheta.boxDropShadow};
   border-radius: 5px;
-`;
+`
 
 export const BarraDeProgressoCompleta = styled.div`
   max-width: 440px;
-  width: ${(props) => props.valor}%;
+  width: ${props => props.valor}%;
   height: 30px;
 
   /* Rectangle 17 */
-  background: ${() => palheta.textImportant};
+  background: ${palheta.textImportant};
 
-  box-shadow: ${() => palheta.boxDropShadow};
+  box-shadow: ${palheta.boxDropShadow};
   border-radius: 5px;
 
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition: width 0.5s;
-`;
+`
 
 const Quadrado2 = styled.div`
   /* Rectangle 18 */
@@ -300,11 +300,11 @@ const Quadrado2 = styled.div`
 
   /* Dark shadow */
 
-  background: ${(props) => props.color};
+  background: ${props => props.color};
   border: 1px solid #000000;
   box-sizing: border-box;
   border-radius: 10px;
-`;
+`
 
 function Template() {
   return (
@@ -327,22 +327,22 @@ function Template() {
         <div className="Inputs">
           <Input
             placeholder="input"
-            style={{ marginLeft: '0px', width: '120px' }}
+            style={{ marginLeft: "0px", width: "120px" }}
           />
           <TextoDestaque>Correr</TextoDestaque>
         </div>
         <div className="Logo-Emoji">
           <Logo>GoHabit</Logo>
-          <Emoji style={{ margin: '20px' }}>😉</Emoji>
+          <Emoji style={{ margin: "20px" }}>😉</Emoji>
         </div>
         <NewInputs placeholder="Input Alternativo" />
         <BarraDeProgressoVazia>
           <BarraDeProgressoCompleta valor={72} />
         </BarraDeProgressoVazia>
-        <Icon size={72}/>
-        <Icon2 size={72}/>
-        <Icon3 size={72}/>
-        <Icon4 size={72}/>
+        <Icon size={72} />
+        <Icon2 size={72} />
+        <Icon3 size={72} />
+        <Icon4 size={72} />
       </div>
       <div className="colors-parte">
         <Header2>Colors</Header2>
@@ -356,7 +356,7 @@ function Template() {
         </div>
       </div>
     </BodyDiv>
-  );
+  )
 }
 
-export default Template;
+export default Template

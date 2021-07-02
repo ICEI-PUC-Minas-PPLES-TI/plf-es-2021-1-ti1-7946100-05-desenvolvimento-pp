@@ -24,13 +24,20 @@ for (let i = 0; i < 15; i++) {
 }
 
 export const BodyPage = styled.div`
-  background-color: ${() => palheta.background};
+  ${props =>
+    props.terminouAnimacao
+      ? `
+      min-height: calc(100vh - 96px);
+      height: 100%;`
+      : `
+      height: 10px;
+      overflow: hidden;`}
+  background-color: ${palheta.background};
   padding: 30px;
-  min-height: calc(100vh - 96px);
   max-width: 600px;
-  height: 100%;
+
   margin: auto;
-  box-shadow: ${() => palheta.bodyBoxShadow};
+  box-shadow: ${palheta.bodyBoxShadow};
 
   @keyframes fadeinTop {
     from {
@@ -86,6 +93,9 @@ export const BodyPage = styled.div`
   .HabitoConcluido {
     opacity: 0;
     transition-duration: 0.5s;
+    .CheckButton {
+      box-shadow: 2px 2px 5px #c3cad0, -2px -2px 5px #ffffff;
+    }
   }
 
   .EmojiHorario {
@@ -155,7 +165,7 @@ export const BodyPage = styled.div`
   }
 
   .ProgressoTitulo {
-    color: ${() => palheta.text};
+    color: ${palheta.text};
     padding-bottom: 4px;
     text-align: right;
     font-size: 20px;
@@ -176,8 +186,8 @@ export const BodyPage = styled.div`
   }
 
   .EmojiStreak {
-    background: ${() => palheta.background};
-    box-shadow: ${() => palheta.boxDropShadow};
+    background: ${palheta.background};
+    box-shadow: ${palheta.boxDropShadow};
     border-radius: 25px;
     width: 80px;
     height: 42px;
@@ -187,7 +197,7 @@ export const BodyPage = styled.div`
     align-items: center;
     padding: 3px 3px 3px 5px;
     font-size: 20px;
-    color: ${() => palheta.text};
+    color: ${palheta.text};
   }
 
   .EmojiConcluido {
@@ -294,7 +304,6 @@ function atualizarHabitosComConcluidos(
   setCarregarHabitos(true)
 }
 
-
 function ListaDehabitos({
   user,
   setPagina,
@@ -303,7 +312,7 @@ function ListaDehabitos({
   habitoConcluido,
   setHabitoConcluido,
   habitos,
-  setHabitos
+  setHabitos,
 }) {
   const [feitoLerHabito, setFeitoLerHabitos] = useState(false)
   const [feitoLerHistorico, setFeitoLerHistorico] = useState(false)
@@ -313,7 +322,7 @@ function ListaDehabitos({
   const [atualizarHabitoLinha, setAtualizarHabitoLinha] = useState(false)
   const [, setFeito] = useState(false)
   const [feitoremover, setFeitoremover] = useState(false)
-
+  const [terminouAnimacao, setTerminouAnimacao] = useState(false)
 
   useEffect(() => {
     readDocsUmaCondicao(
@@ -346,6 +355,8 @@ function ListaDehabitos({
       setFeitoLerHistorico,
       setErros
     )
+
+    setTimeout(() => setTerminouAnimacao(true), 3000)
   }, [user])
 
   useEffect(() => {
@@ -386,7 +397,7 @@ function ListaDehabitos({
   }, [feitoremover, user])
 
   return (
-    <BodyPage className="container">
+    <BodyPage className="container" terminouAnimacao={terminouAnimacao}>
       <main>
         <Template.Header1 className="Headers">Hábitos de Hoje</Template.Header1>
 
