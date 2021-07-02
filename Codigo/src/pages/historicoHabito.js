@@ -20,7 +20,7 @@ let animationDelay = ""
 for (let i = 0; i < 15; i++) {
   animationDelay += `
    .historico-linha:nth-child(${i + 1}) {
-    animation-delay: ${0 + i * 0.3}s;
+    animation-delay: ${0 + i * 0.1}s;
   }`
 }
 

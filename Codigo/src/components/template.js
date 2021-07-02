@@ -39,8 +39,8 @@ export const Body = styled.div`
   font-family: Work Sans;
   font-style: normal;
   font-weight: normal;
-  font-size: 13px;
-  line-height: 15px;
+  font-size: 14px;
+  line-height: 17px;
   letter-spacing: -0.02em;
   color: ${() => palheta.text};
 `;

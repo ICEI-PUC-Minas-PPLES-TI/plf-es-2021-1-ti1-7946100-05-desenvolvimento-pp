@@ -172,6 +172,7 @@ export const BodyPage = styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 16px;
+    flex-wrap: wrap;
   }
 
   .EmojiStreak {
