@@ -16,7 +16,7 @@ import {
 const BodyPage = styled.div`
   background-color: ${() => palheta.background};
   padding: 30px;
-  min-height: calc(100vh - 96px);
+  min-height: calc(100vh - 115px);
   max-width: 600px;
   height: 100%;
   width: 100%

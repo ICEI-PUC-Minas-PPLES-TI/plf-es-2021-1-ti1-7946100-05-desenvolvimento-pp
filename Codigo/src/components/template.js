@@ -204,7 +204,6 @@ const TextoDestaqueDiv = styled.div`
 
 export const Linha = styled.div`
   height: 1px;
-  max-width: 400px;
   min-width: 60px;
   margin-top: 4px;
   border: 0.1px solid ${palheta.background};

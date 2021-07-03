@@ -410,7 +410,7 @@ function HistoricoHabitos({ user, habito, setPagina, habitos }) {
                   fontSize: "22px",
                 }}
               >
-                Última semana
+                Histórico do Hábito
               </Template.Header3>
               <ResponsiveContainer width="99%">
                 <ComposedChart

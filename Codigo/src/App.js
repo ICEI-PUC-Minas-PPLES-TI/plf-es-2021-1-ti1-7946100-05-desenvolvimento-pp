@@ -10,7 +10,7 @@ import BarraSuperior from "./pages/BarraSuperior"
 import HistoricoHabitos from "./pages/historicoHabito"
 import LoadingPage from "./pages/loadingPage"
 import Acompanhamento from "../src/pages/acompanhamento"
-import Sobre from '../src/pages/sobre'
+import Sobre from "../src/pages/sobre"
 
 const AppDiv = styled.div`
   min-height: 100vh;
@@ -31,15 +31,19 @@ function App() {
   const [habitoCadastrado, setHabitoCadastrado] = useState(false)
   const [habitoConcluido, setHabitoConcluido] = useState(false)
   const [habitos, setHabitos] = useState([])
+  const [terminouAnimacao, setTerminouAnimacao] = useState(false)
 
   useEffect(() => {
     const unlisten = auth.onAuthStateChanged(authUser => {
       authUser ? setUser(authUser) : setUser(null)
     })
+
     return () => {
       unlisten()
     }
   })
+
+  useEffect(() => setTimeout(() => setTerminouAnimacao(true), 3000), [])
 
   useEffect(() => setHabitoConcluido(false), [habitoConcluido])
   useEffect(() => setHabitoCadastrado(false), [habitoConcluido])
@@ -74,6 +78,7 @@ function App() {
       {pagina === 0 && <Home setShowModal={setShowModal} />}
       {pagina === 1 && (
         <ListaDehabitos
+          terminouAnimacao={terminouAnimacao}
           user={user != null ? user.uid : null}
           setPagina={setPagina}
           setHabitoSelecionado={setHabitoSelecionado}

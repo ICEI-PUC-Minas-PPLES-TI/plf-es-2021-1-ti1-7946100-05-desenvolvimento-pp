@@ -7,11 +7,50 @@ import {
 } from "../utils/utils"
 import * as Template from "../components/template"
 import styled from "styled-components"
+import { palheta } from "../components/palheta"
 import firebase from "firebase/app"
 require("firebase/firestore")
 
 const HabitoLinhaStyled = styled.section`
   order: ${props => props.ordem};
+
+  .horario-nome {
+    width: calc(600px - 175px);
+  }
+
+  .fa-caret-down {
+    color: ${palheta.textImportant};
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .habito-info, .NewInputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 10px 0px 5px;
+  }
+
+  .NewInputs{
+    animation: .7s linear 0s newinputs;
+  }
+
+  @keyframes newinputs {
+    from {
+      max-height: 0px;
+      opacity: 0;
+    } to {
+      max-height: 20px;
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .horario-nome {
+      width: calc(100% - 128px);
+    }
+  }
 `
 
 function Habito({
@@ -36,7 +75,7 @@ function Habito({
   meta,
   periodicidade,
   recompensa,
-  setHabitoConcluido
+  setHabitoConcluido,
 }) {
   const emojiRef = useRef(null)
   const [concluido, setConcluido] = useState(concluidoLista)
@@ -52,6 +91,7 @@ function Habito({
   const [historicoConcluido, setHistoricoConcluido] = useState([])
   const [historicoFeito, setHistoricoFeito] = useState(false)
   const [, setHistoricoErros] = useState("")
+  const [mostrarMaisOpcoes, setMostrarMaisOpcoes] = useState(false)
 
   useEffect(() => {
     if (emojiRef.current) emojiRef.current.innerHTML = emoji
@@ -97,7 +137,7 @@ function Habito({
     historicoConcluido,
     setAtualizarHabitoLinha,
     setHabitosConcluidos,
-    historicoHabitoDoc
+    historicoHabitoDoc,
   ])
 
   useEffect(() => {
@@ -150,73 +190,76 @@ function Habito({
       ordem={ordem}
       className={"Habito" + (concluido ? " HabitoConcluido" : "")}
     >
-      <div className="EmojiHorario">
-        <Template.Emoji ref={emojiRef} className="Emoji">
-          {emoji}
-        </Template.Emoji>
-        <Template.TextoDestaque>
-          <span className="Horario">
-            {typeof horario === "string" ? horario : changeDateformat(horario)}
-          </span>
-        </Template.TextoDestaque>
-      </div>
-      <div className="NewInputs">
-        <div className="CardHabito">
-          <Template.TextoDestaque>
-            <div className="NomeHabito">{nome}</div>
-          </Template.TextoDestaque>
-          <div className="Contador">
-            <Template.TextoDestaque>
-              <i
-                className="fa fa-minus"
-                onClick={() => setValor(valor - 1)}
-              ></i>
-              {valor} {unidade}
-              <i className="fa fa-plus" onClick={() => setValor(valor + 1)}></i>
-              <i
-                className="fa fa-history"
-                onClick={() => {
-                  setHabitoSelecionado({
-                    nome: nome,
-                    habitoId: habitoId,
-                    emoji: emoji,
-                    unidade: unidade,
-                    valor: parseInt(valorLista),
-                  })
-                  setPagina(4)
-                }}
-              ></i>
-              <i
-                onClick={() => {
-                  setHabitoSelecionado({
-                    nome: nome,
-                    habitoId: habitoId,
-                    ambiente: ambiente,
-                    meta: meta,
-                    emoji: emoji,
-                    unidade: unidade,
-                    periodicidade: periodicidade,
-                    horario: horario,
-                    recompensa: recompensa,
-                    user: user,
-                    docId: habitoId,
-                  })
-                  setIsEdit(true)
-                  setPagina(2)
-                }}
-                className="fa fa-pen"
-              ></i>
-              <i
-                onClick={() => {
-                  if (window.confirm("Você deseja remover este hábito?"))
-                    removeDoc("habitos", habitoId, setFeitoLista, setErros)
-                }}
-                className="fa fa-trash"
-              ></i>
-            </Template.TextoDestaque>
+      <Template.Emoji ref={emojiRef} className="Emoji">
+        {emoji}
+      </Template.Emoji>
+
+      <Template.TextoDestaque className="horario-nome">
+        <div>
+          <div className="habito-info">
+            <span className="Horario">
+              {typeof horario === "string"
+                ? horario
+                : changeDateformat(horario)}
+            </span>
+            <span className="NomeHabito">{nome}</span>
+            <i className="fas fa-caret-down" onClick={() => setMostrarMaisOpcoes(!mostrarMaisOpcoes)}/>
           </div>
+          {mostrarMaisOpcoes && (
+            <div className="NewInputs">
+                <i
+                  className="fa fa-minus"
+                  onClick={() => setValor(valor - 1)}
+                ></i>
+                {valor} {unidade}
+                <i
+                  className="fa fa-plus"
+                  onClick={() => setValor(valor + 1)}
+                ></i>
+                <i
+                  className="fa fa-history"
+                  onClick={() => {
+                    setHabitoSelecionado({
+                      nome: nome,
+                      habitoId: habitoId,
+                      emoji: emoji,
+                      unidade: unidade,
+                      valor: parseInt(valorLista),
+                    })
+                    setPagina(4)
+                  }}
+                ></i>
+                <i
+                  onClick={() => {
+                    setHabitoSelecionado({
+                      nome: nome,
+                      habitoId: habitoId,
+                      ambiente: ambiente,
+                      meta: meta,
+                      emoji: emoji,
+                      unidade: unidade,
+                      periodicidade: periodicidade,
+                      horario: horario,
+                      recompensa: recompensa,
+                      user: user,
+                      docId: habitoId,
+                    })
+                    setIsEdit(true)
+                    setPagina(2)
+                  }}
+                  className="fa fa-pen"
+                ></i>
+                <i
+                  onClick={() => {
+                    if (window.confirm("Você deseja remover este hábito?"))
+                      removeDoc("habitos", habitoId, setFeitoLista, setErros)
+                  }}
+                  className="fa fa-trash"
+                ></i>
+            </div>
+          )}
         </div>
-      </div>
+      </Template.TextoDestaque>
       <Template.Button
         className="CheckButton"
         id="btnCheck"

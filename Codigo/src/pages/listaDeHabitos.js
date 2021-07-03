@@ -27,7 +27,7 @@ export const BodyPage = styled.div`
   ${props =>
     props.terminouAnimacao
       ? `
-      min-height: calc(100vh - 96px);
+      min-height: calc(100vh - 115px);
       height: 100%;`
       : `
       height: 10px;
@@ -71,6 +71,7 @@ export const BodyPage = styled.div`
   .Habitos {
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
   }
 
   ${animationDelay}
@@ -79,8 +80,7 @@ export const BodyPage = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
     animation: 1s fadeinTop 0s forwards;
     opacity: 0;
   }
@@ -89,7 +89,6 @@ export const BodyPage = styled.div`
     animation: 1s fadeinTopConcluido 0s forwards;
   }
 
-  //Concluir Hábito -> Deixar transparente
   .HabitoConcluido {
     opacity: 0;
     transition-duration: 0.5s;
@@ -113,20 +112,10 @@ export const BodyPage = styled.div`
     font-weight: normal;
   }
 
-  .NewInputs {
-    margin: 5px;
-    display: flex;
-    flex-direction: row;
-  }
-
   .NomeHabito {
     font-size: 24px;
     text-align: center;
     margin-bottom: 8px;
-  }
-
-  .CardHabito {
-    margin: 2px;
   }
 
   .Contador {
@@ -211,8 +200,14 @@ export const BodyPage = styled.div`
   }
 
   .Submit {
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0px 10px;
+  }
+
+  h2,
+  button {
+    margin: 0px;
   }
 
   @media (max-width: 440px) {
@@ -313,6 +308,7 @@ function ListaDehabitos({
   setHabitoConcluido,
   habitos,
   setHabitos,
+  terminouAnimacao,
 }) {
   const [feitoLerHabito, setFeitoLerHabitos] = useState(false)
   const [feitoLerHistorico, setFeitoLerHistorico] = useState(false)
@@ -322,7 +318,15 @@ function ListaDehabitos({
   const [atualizarHabitoLinha, setAtualizarHabitoLinha] = useState(false)
   const [, setFeito] = useState(false)
   const [feitoremover, setFeitoremover] = useState(false)
-  const [terminouAnimacao, setTerminouAnimacao] = useState(false)
+  const [hoje] = useState(
+    new Date()
+      .toLocaleDateString("pt-BR", {
+        weekday: "short",
+        month: "short",
+        day: "2-digit",
+      })
+      .replace(".", "")
+  )
 
   useEffect(() => {
     readDocsUmaCondicao(
@@ -355,8 +359,6 @@ function ListaDehabitos({
       setFeitoLerHistorico,
       setErros
     )
-
-    setTimeout(() => setTerminouAnimacao(true), 3000)
   }, [user])
 
   useEffect(() => {
@@ -400,6 +402,21 @@ function ListaDehabitos({
     <BodyPage className="container" terminouAnimacao={terminouAnimacao}>
       <main>
         <Template.Header1 className="Headers">Hábitos de Hoje</Template.Header1>
+
+        <div className="Submit">
+          <Template.Header2 style={{ paddingTop: "12px" }}>
+            {hoje.toString()}
+          </Template.Header2>
+          <Template.Button
+            className="Button"
+            onClick={() => {
+              setIsEdit(false)
+              setPagina(2)
+            }}
+          >
+            + Criar hábito
+          </Template.Button>
+        </div>
 
         {!carregarHabitos && (
           <Template.Body style={{ textAlign: "center" }}>
@@ -485,17 +502,6 @@ function ListaDehabitos({
               </div>
             </div>
           )}
-          <div className="Submit">
-            <Template.Button
-              className="Button"
-              onClick={() => {
-                setIsEdit(false)
-                setPagina(2)
-              }}
-            >
-              Adicionar Hábito
-            </Template.Button>
-          </div>
         </section>
       </main>
     </BodyPage>

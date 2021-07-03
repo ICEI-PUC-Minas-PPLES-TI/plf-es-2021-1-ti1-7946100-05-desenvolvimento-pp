@@ -33,7 +33,7 @@ function Icon({ animated, size }) {
           <animate
             attributeName="d"
             values={dList2 + ";" + dList1 + ";" +dList0 + ";" +dLogo}
-            dur="0.8s"
+            dur="1.6s"
             id="svg-logo-listing"
             fill="freeze"
             // begin="0.5s"

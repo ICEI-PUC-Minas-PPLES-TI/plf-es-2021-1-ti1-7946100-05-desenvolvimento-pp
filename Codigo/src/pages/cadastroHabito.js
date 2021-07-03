@@ -25,7 +25,20 @@ const EmojiButtonStyled = styled.div`
 
 const emojiRange = [
   [128513, 128591],
-  [9986, 10160],
+  [9994, 9997],
+  [10024, 10026],
+  [10060, 10062],
+  [10067, 10071],
+  [10133, 10135],
+  [8986, 8987],
+  [9193, 9203],
+  [9748, 9749],
+  [9917, 9918],
+  [9924, 9925],
+  [9934, 9935],
+  [9968, 9978],
+  [127744, 127994],
+  [128000, 128303],
   [128640, 128704],
 ]
 
@@ -33,7 +46,7 @@ export function EmojiButton(props) {
   const [emoji, setEmoji] = useState(props.emoji || "&#128521")
   const ulRef = useRef(null)
   const divRef = useRef(null)
-  const [emojiRange2, ] = useState(() => {
+  const [emojiRange2] = useState(() => {
     let emojiRange2b = []
 
     for (var i = 0; i < emojiRange.length; i++) {
@@ -97,6 +110,7 @@ export function EmojiButton(props) {
             >
               {"&#" + e + ""}
             </button>
+            {/* {e}/ */}
           </li>
         ))}
       </ul>
@@ -117,6 +131,13 @@ export const BodyPage = styled.div`
   flex-flow: column;
   justify-content: flex-start;
   box-shadow: ${() => palheta.bodyBoxShadow};
+
+  .form {
+    height: calc(100vh - 235px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
   .Navbar {
     display: flex;
@@ -210,15 +231,8 @@ class CadastroHabito extends Component {
   }
 
   render() {
-    let {
-      nome,
-      ambiente,
-      meta,
-      unidade,
-      periodicidade,
-      horario,
-      recompensa,
-    } = this.state
+    let { nome, ambiente, meta, unidade, periodicidade, horario, recompensa } =
+      this.state
 
     return (
       <BodyPage>
@@ -226,6 +240,7 @@ class CadastroHabito extends Component {
           Cadastro de hábito
         </Template.Header1>
         <form onSubmit={this.onFormSubmit}>
+        <div className="form">
           <div className="Row">
             <div className="Label1">
               <label>Nome do hábito*</label>
@@ -256,9 +271,8 @@ class CadastroHabito extends Component {
           <div className="Row">
             <label>Meta Ideal*</label>{" "}
             <Template.NewInputs
-              placeholder="metros"
-              maxLength="50"
-              type="text"
+              placeholder="5"
+              type="number"
               value={meta}
               onChange={this.handleChange}
               name="meta"
@@ -317,6 +331,7 @@ class CadastroHabito extends Component {
               Cancelar
             </Template.Link>
           </div>
+        </div>
         </form>
       </BodyPage>
     )
