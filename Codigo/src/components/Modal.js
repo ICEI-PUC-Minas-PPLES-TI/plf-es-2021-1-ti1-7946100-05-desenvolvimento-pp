@@ -92,13 +92,33 @@ const ModalContent = styled.div`
   }
 `
 
-
 export const Modal = ({ showModal, setShowModal }) => {
-  const [, setNomeCadastro] = useState("")
+  const [nomeCadastro, setNomeCadastro] = useState("")
   const [emailCadastro, setEmailCadastro] = useState("")
   const [senhaCadastro, setSenhaCadastro] = useState("")
-  // const [confirmaSenhaCadastro, setConfirmaSenhaCadastro] = useState("");
-  const [, setErros] = useState("")
+  const [confirmacaoDeSenha, setConfirmacaoDeSenha] = useState("")
+  const [erros, setErros] = useState("")
+
+  const cadastrarUsuario = () => {
+    if (emailCadastro === "") return alert("É necessário preencher o email.")
+    if (senhaCadastro === "") return alert("É necessário preencher a senha.")
+    if (senhaCadastro !== confirmacaoDeSenha)
+      return alert("A senha e a confirmação da senha não estão idênticas.")
+    switch (erros) {
+      case "The email address is badly formatted.":
+        setErros("")
+        return alert("O email informado não é válido.")
+      case "Password should be at least 6 characters":
+        setErros("")
+        return alert("A senha precisa ter no mínimo 6 dígitos.")
+      case "The email address is already in use by another account.":
+        setErros("")
+        return alert("O email informado já está cadastrado em uma conta.")
+    }
+    console.log('nomeCadastro', nomeCadastro)
+    signUp(emailCadastro, senhaCadastro, nomeCadastro, setErros)
+  }
+
   return (
     <>
       {showModal ? (
@@ -153,10 +173,7 @@ export const Modal = ({ showModal, setShowModal }) => {
                     <Template.Input
                       type="password"
                       placeholder="Confirme a senha"
-                      onChange={
-                        e => null
-                        // setConfirmaSenhaCadastro(e.target.value)
-                      }
+                      onChange={e => setConfirmacaoDeSenha(e.target.value)}
                     ></Template.Input>
                   </div>
                 </div>
@@ -164,9 +181,7 @@ export const Modal = ({ showModal, setShowModal }) => {
                 <div className="btnSubmit">
                   <div className="inpt">
                     <Template.Button
-                      onClick={() => {
-                        signUp(emailCadastro, senhaCadastro, setErros)
-                      }}
+                      onClick={() => cadastrarUsuario()}
                       id="btnEnviarCadastro"
                     >
                       Enviar

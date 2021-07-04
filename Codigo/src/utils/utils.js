@@ -7,7 +7,7 @@ export function updateDoc(colecao, valores, documento, setFeito, setErros) {
   return db
     .collection(colecao)
     .doc(documento)
-    .set(valores)
+    .set(valores, { merge: true })
     .then(doc => {
       console.log("Document successfully written!")
       setFeito(true)
@@ -57,7 +57,7 @@ export function readDoc(colecao, documento, setValores, setFeito, setErros) {
       if (doc.exists) {
         setFeito(true)
         setValores(doc.data())
-        console.log("Document data:", doc.data())
+        // console.log("Document data:", doc.data())
       } else {
         // doc.data() will be undefined in this case
         console.log("No such document!")
@@ -179,12 +179,22 @@ export function login(email, password, setErros) {
     })
 }
 
-export function signUp(email, password, setErros) {
+export function signUp(email, password, nome, setErros) {
   return auth
     .createUserWithEmailAndPassword(email, password)
     .then(userCredential => {
-      // Signed in
-      // var user = userCredential.user;
+      updateDoc(
+        "usuario",
+        {
+          nome: nome,
+          email: userCredential.user.email,
+          login: 1,
+          last_login: new Date(),
+        },
+        userCredential.user.uid,
+        () => {},
+        () => {}
+      )
     })
     .catch(error => {
       // var errorCode = error.code;

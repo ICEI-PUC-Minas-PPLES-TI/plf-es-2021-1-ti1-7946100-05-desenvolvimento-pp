@@ -11,6 +11,7 @@ import HistoricoHabitos from "./pages/historicoHabito"
 import LoadingPage from "./pages/loadingPage"
 import Acompanhamento from "../src/pages/acompanhamento"
 import Sobre from "../src/pages/sobre"
+import { readDoc, updateDoc } from "./utils/utils"
 
 const AppDiv = styled.div`
   min-height: 100vh;
@@ -32,6 +33,8 @@ function App() {
   const [habitoConcluido, setHabitoConcluido] = useState(false)
   const [habitos, setHabitos] = useState([])
   const [terminouAnimacao, setTerminouAnimacao] = useState(false)
+  const [feitoLerUsuario, setFeitoLerUsuario] = useState(false)
+  const [dadosUsuario, setDadosUsuario] = useState({})
 
   useEffect(() => {
     const unlisten = auth.onAuthStateChanged(authUser => {
@@ -42,6 +45,33 @@ function App() {
       unlisten()
     }
   })
+
+  useEffect(() => {
+    if (user?.uid)
+      readDoc(
+        "usuario",
+        user.uid,
+        setDadosUsuario,
+        setFeitoLerUsuario,
+        () => {}
+      )
+  }, [JSON.stringify(user)])
+
+  useEffect(() => {
+    if (feitoLerUsuario) {
+      let logins = isNaN(Number(dadosUsuario.login))
+        ? 0
+        : Number(dadosUsuario.login) + 1
+      updateDoc(
+        "usuario",
+        { email: user.email, login: logins, last_login: new Date() },
+        user.uid,
+        () => {},
+        () => console.log("erro")
+      )
+    }
+    setFeitoLerUsuario(false)
+  }, [feitoLerUsuario])
 
   useEffect(() => setTimeout(() => setTerminouAnimacao(true), 3000), [])
 

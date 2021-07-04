@@ -26,8 +26,8 @@ for (let i = 0; i < 15; i++) {
 
 const Container = styled.div`
   background-color: ${() => palheta.background};
-  padding: 30px;
-  min-height: calc(100vh - 97px);
+  padding: 10px 30px 5px;
+  min-height: calc(100vh - 115px);
   width: 100%;
   max-width: 600px;
   margin: auto;
@@ -307,7 +307,6 @@ function HistoricoHabitos({ user, habito, setPagina, habitos }) {
 
   useEffect(() => {
     if (user !== null && habitoSelecionado !== "") {
-      console.log('habitoSelecionado', habitoSelecionado)
       setHistorico([])
       setErros("")
       setFeito(false)

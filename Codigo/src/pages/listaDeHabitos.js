@@ -33,7 +33,7 @@ export const BodyPage = styled.div`
       height: 10px;
       overflow: hidden;`}
   background-color: ${palheta.background};
-  padding: 30px;
+  padding: 10px 30px 5px;
   max-width: 600px;
 
   margin: auto;
@@ -202,7 +202,7 @@ export const BodyPage = styled.div`
   .Submit {
     display: flex;
     justify-content: space-between;
-    margin: 15px 0px 10px;
+    margin: 15px 0px 15px;
   }
 
   h2,
@@ -373,16 +373,16 @@ function ListaDehabitos({
   }, [feitoLerHistorico, feitoLerHabito])
 
   useEffect(() => {
+    atualizarHabitosComConcluidos(
+      habitos,
+      habitosConcluidos,
+      setHabitos,
+      setCarregarHabitos
+    )
     if (atualizarHabitoLinha) {
-      atualizarHabitosComConcluidos(
-        habitos,
-        habitosConcluidos,
-        setHabitos,
-        setCarregarHabitos
-      )
       setAtualizarHabitoLinha(false)
     }
-  }, [atualizarHabitoLinha, habitos, habitosConcluidos])
+  }, [atualizarHabitoLinha, JSON.stringify(habitosConcluidos)])
 
   useEffect(() => {
     if (feitoremover) {
@@ -401,23 +401,26 @@ function ListaDehabitos({
   return (
     <BodyPage className="container" terminouAnimacao={terminouAnimacao}>
       <main>
-        <Template.Header1 className="Headers">Hábitos de Hoje</Template.Header1>
+        <section>
+          <Template.Header1 className="Headers">
+            Hábitos de Hoje
+          </Template.Header1>
 
-        <div className="Submit">
-          <Template.Header2 style={{ paddingTop: "12px" }}>
-            {hoje.toString()}
-          </Template.Header2>
-          <Template.Button
-            className="Button"
-            onClick={() => {
-              setIsEdit(false)
-              setPagina(2)
-            }}
-          >
-            + Criar hábito
-          </Template.Button>
-        </div>
-
+          <div className="Submit">
+            <Template.Header2 style={{ paddingTop: "12px" }}>
+              {hoje.toString()}
+            </Template.Header2>
+            <Template.Button
+              className="Button"
+              onClick={() => {
+                setIsEdit(false)
+                setPagina(2)
+              }}
+            >
+              + Criar hábito
+            </Template.Button>
+          </div>
+        </section>
         {!carregarHabitos && (
           <Template.Body style={{ textAlign: "center" }}>
             <div className="text-center">

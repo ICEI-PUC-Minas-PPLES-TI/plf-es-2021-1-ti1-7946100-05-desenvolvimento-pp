@@ -15,7 +15,7 @@ import {
 } from "recharts"
 const BodyPage = styled.div`
   background-color: ${() => palheta.background};
-  padding: 30px;
+  padding: 10px 30px 5px;
   min-height: calc(100vh - 115px);
   max-width: 600px;
   height: 100%;

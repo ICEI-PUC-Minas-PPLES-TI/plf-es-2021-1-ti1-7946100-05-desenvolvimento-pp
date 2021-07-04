@@ -19,7 +19,7 @@ for (let i = 0; i < 7; i++) {
 
 const Container = styled.div`
   background-color: ${() => palheta.background};
-  padding: 30px;
+  padding: 10px 30px 5px;
   min-height: calc(100vh - 97px);
   width: 100%;
   max-width: 600px;

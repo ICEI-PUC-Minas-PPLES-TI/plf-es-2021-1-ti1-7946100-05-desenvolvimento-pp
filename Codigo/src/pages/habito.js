@@ -15,7 +15,7 @@ const HabitoLinhaStyled = styled.section`
   order: ${props => props.ordem};
 
   .horario-nome {
-    width: calc(600px - 175px);
+    width: calc(600px - 200px);
   }
 
   .fa-caret-down {
