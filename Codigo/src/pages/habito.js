@@ -20,7 +20,7 @@ const HabitoLinhaStyled = styled.section`
 
   .fa-caret-down {
     color: ${palheta.textImportant};
-    margin-right: 20px;
+    margin-right: 5px;
     cursor: pointer;
   }
 
@@ -48,7 +48,7 @@ const HabitoLinhaStyled = styled.section`
 
   @media (max-width: 600px) {
     .horario-nome {
-      width: calc(100% - 128px);
+      width: calc(100% - 100px);
     }
   }
 `
