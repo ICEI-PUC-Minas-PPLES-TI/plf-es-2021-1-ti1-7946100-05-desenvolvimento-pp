@@ -24,7 +24,8 @@ const HabitoLinhaStyled = styled.section`
     cursor: pointer;
   }
 
-  .habito-info, .NewInputs {
+  .habito-info,
+  .NewInputs {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -32,15 +33,16 @@ const HabitoLinhaStyled = styled.section`
     margin: 10px 0px 5px;
   }
 
-  .NewInputs{
-    animation: .7s linear 0s newinputs;
+  .NewInputs {
+    animation: 0.7s linear 0s newinputs;
   }
 
   @keyframes newinputs {
     from {
       max-height: 0px;
       opacity: 0;
-    } to {
+    }
+    to {
       max-height: 20px;
       opacity: 1;
     }
@@ -92,6 +94,9 @@ function Habito({
   const [historicoFeito, setHistoricoFeito] = useState(false)
   const [, setHistoricoErros] = useState("")
   const [mostrarMaisOpcoes, setMostrarMaisOpcoes] = useState(false)
+
+  useEffect(() => setConcluido(concluidoLista), [concluidoLista])
+  useEffect(() => setHistoricoHabitoDoc(concluidoId),[concluidoId])
 
   useEffect(() => {
     if (emojiRef.current) emojiRef.current.innerHTML = emoji
@@ -203,59 +208,59 @@ function Habito({
                 : changeDateformat(horario)}
             </span>
             <span className="NomeHabito">{nome}</span>
-            <i className="fas fa-caret-down" onClick={() => setMostrarMaisOpcoes(!mostrarMaisOpcoes)}/>
+            <i
+              className="fas fa-caret-down"
+              onClick={() => setMostrarMaisOpcoes(!mostrarMaisOpcoes)}
+            />
           </div>
           {mostrarMaisOpcoes && (
             <div className="NewInputs">
-                <i
-                  className="fa fa-minus"
-                  onClick={() => setValor(valor - 1)}
-                ></i>
-                {valor} {unidade}
-                <i
-                  className="fa fa-plus"
-                  onClick={() => setValor(valor + 1)}
-                ></i>
-                <i
-                  className="fa fa-history"
-                  onClick={() => {
-                    setHabitoSelecionado({
-                      nome: nome,
-                      habitoId: habitoId,
-                      emoji: emoji,
-                      unidade: unidade,
-                      valor: parseInt(valorLista),
-                    })
-                    setPagina(4)
-                  }}
-                ></i>
-                <i
-                  onClick={() => {
-                    setHabitoSelecionado({
-                      nome: nome,
-                      habitoId: habitoId,
-                      ambiente: ambiente,
-                      meta: meta,
-                      emoji: emoji,
-                      unidade: unidade,
-                      periodicidade: periodicidade,
-                      horario: horario,
-                      recompensa: recompensa,
-                      user: user,
-                      docId: habitoId,
-                    })
-                    setIsEdit(true)
-                    setPagina(2)
-                  }}
-                  className="fa fa-pen"
-                ></i>
-                <i
-                  onClick={() => {
-                    if (window.confirm("Você deseja remover este hábito?"))
-                      removeDoc("habitos", habitoId, setFeitoLista, setErros)
-                  }}
-                  className="fa fa-trash"
-                ></i>
+              <i
+                className="fa fa-minus"
+                onClick={() => setValor(valor - 1)}
+              ></i>
+              {valor} {unidade}
+              <i className="fa fa-plus" onClick={() => setValor(valor + 1)}></i>
+              <i
+                className="fa fa-history"
+                onClick={() => {
+                  setHabitoSelecionado({
+                    nome: nome,
+                    habitoId: habitoId,
+                    emoji: emoji,
+                    unidade: unidade,
+                    valor: parseInt(valorLista),
+                  })
+                  setPagina(4)
+                }}
+              ></i>
+              <i
+                onClick={() => {
+                  setHabitoSelecionado({
+                    nome: nome,
+                    habitoId: habitoId,
+                    ambiente: ambiente,
+                    meta: meta,
+                    emoji: emoji,
+                    unidade: unidade,
+                    periodicidade: periodicidade,
+                    horario: horario,
+                    recompensa: recompensa,
+                    user: user,
+                    docId: habitoId,
+                  })
+                  setIsEdit(true)
+                  setPagina(2)
+                }}
+                className="fa fa-pen"
+              ></i>
+              <i
+                onClick={() => {
+                  if (window.confirm("Você deseja remover este hábito?"))
+                    removeDoc("habitos", habitoId, setFeitoLista, setErros)
+                }}
+                className="fa fa-trash"
+              ></i>
             </div>
           )}
         </div>

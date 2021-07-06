@@ -256,7 +256,7 @@ function BarraSuperior(props) {
                   <li onClick={() => navegacao(5)}>Acompanhamento</li>
                   {/* <li>Mais Informações</li> */}
                   <li onClick={() => navegacao(6)}>Sobre</li>
-                  <li onClick={() => navegacao(3)}>Template</li>
+                  {/*<li onClick={() => navegacao(3)}>Template</li>*/}
                   <li
                     onClick={() => {
                       logout()
