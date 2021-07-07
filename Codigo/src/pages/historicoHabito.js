@@ -453,7 +453,7 @@ function HistoricoHabitos({ user, habito, setPagina, habitos }) {
 
       <div className="navegacao">
         <Template.Button className="Button" onClick={() => setPagina(2)}>
-          Histórico do Hábito
+          Adicionar Hábito
         </Template.Button>
         <Template.Link onClick={() => setPagina(1)}>Voltar</Template.Link>
       </div>
