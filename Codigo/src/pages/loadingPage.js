@@ -7,7 +7,7 @@ const Container = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 100;
   background-color: ${() => palheta.background};
   animation: 1s linear 4s entrance_logo both;
 

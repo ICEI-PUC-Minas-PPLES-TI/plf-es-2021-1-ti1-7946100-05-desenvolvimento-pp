@@ -5,17 +5,19 @@ import { palheta } from "./components/palheta"
 import Template from "./components/template"
 import CadastroHabito from "./pages/cadastroHabito"
 import ListaDehabitos from "./pages/listaDeHabitos"
-import Home from "./pages/home"
+// import Home from "./pages/home"
 import BarraSuperior from "./pages/BarraSuperior"
 import HistoricoHabitos from "./pages/historicoHabito"
 import LoadingPage from "./pages/loadingPage"
 import Acompanhamento from "../src/pages/acompanhamento"
+import LandingPage from "../src/pages/landingPage"
 import Sobre from "../src/pages/sobre"
 import { readDoc, updateDoc } from "./utils/utils"
 
+
 const AppDiv = styled.div`
   min-height: 100vh;
-  background-color: ${() => palheta.background};
+  background-color: ${palheta.background};
   display: grid;
   grid-template-rows: auto auto 1fr;
   box-shadow: rgb(195, 202, 208) 5px 8px 10px, rgb(195, 202, 208) -5px 8px 10px;
@@ -41,9 +43,7 @@ function App() {
       authUser ? setUser(authUser) : setUser(null)
     })
 
-    return () => {
-      unlisten()
-    }
+    return () => unlisten()
   })
 
   useEffect(() => {
@@ -100,12 +100,18 @@ function App() {
         showModalAlterarSenha={showModalAlterarSenha}
         setShowModalAlterarSenha={setShowModalAlterarSenha}
         user={user != null ? user.uid : null}
+        pagina={pagina}
         setPagina={setPagina}
         habitoConcluido={habitoConcluido}
         habitoCadastrado={habitoCadastrado}
         habitos={habitos}
       />
-      {pagina === 0 && <Home setShowModal={setShowModal} />}
+      {pagina === 0 && (
+        <LandingPage
+          terminouAnimacao={terminouAnimacao}
+          setShowModal={setShowModal}
+        />
+      )}
       {pagina === 1 && (
         <ListaDehabitos
           terminouAnimacao={terminouAnimacao}

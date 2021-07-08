@@ -133,7 +133,7 @@ export const BodyPage = styled.div`
   box-shadow: ${() => palheta.bodyBoxShadow};
 
   .form {
-    height: calc(100vh - 235px);
+    min-height: calc(100vh - 235px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;

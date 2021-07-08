@@ -12,7 +12,13 @@ import LogoListing from "../components/logoListing2"
 
 const Navbar = styled.nav`
   padding: 20px;
-  max-width: 600px;
+  ${props =>
+    props.pagina !== 0
+      ? `max-width: 600px;`
+      : `
+  box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%) !important;
+  z-index: 10;
+  `}
   width: 100%;
   margin: auto;
   display: flex;
@@ -169,8 +175,13 @@ function BarraSuperior(props) {
     setOpenNavegacao(false)
   }
 
+  useEffect(() => {
+    setEmail('')
+    setSenha('')
+  },[props.user])
+
   return (
-    <Navbar>
+    <Navbar pagina={props.pagina}>
       {!animacaoConcluido && !animacaoCadastrdado && (
         <Logo
           size={72}
@@ -252,7 +263,9 @@ function BarraSuperior(props) {
               <div ref={wrapperRef} className="dropdown-navegacao">
                 <ul>
                   <li onClick={() => navegacao(1)}>Hábitos</li>
-                  {props.habitos.length > 0 && <li onClick={() => navegacao(4)}>Historico</li>}
+                  {props.habitos.length > 0 && (
+                    <li onClick={() => navegacao(4)}>Historico</li>
+                  )}
                   <li onClick={() => navegacao(5)}>Acompanhamento</li>
                   {/* <li>Mais Informações</li> */}
                   <li onClick={() => navegacao(6)}>Sobre</li>
