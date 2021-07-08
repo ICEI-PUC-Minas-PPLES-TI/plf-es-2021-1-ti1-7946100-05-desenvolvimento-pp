@@ -1,21 +1,25 @@
 {
   "files": {
     "main.css": "/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/static/js/main.272b60ad.chunk.js",
-    "main.js.map": "/static/js/main.272b60ad.chunk.js.map",
+    "main.js": "/static/js/main.4001d727.chunk.js",
+    "main.js.map": "/static/js/main.4001d727.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.fed86d29.js",
     "runtime-main.js.map": "/static/js/runtime-main.fed86d29.js.map",
-    "static/js/2.a90cf623.chunk.js": "/static/js/2.a90cf623.chunk.js",
-    "static/js/2.a90cf623.chunk.js.map": "/static/js/2.a90cf623.chunk.js.map",
+    "static/js/2.1a4889e9.chunk.js": "/static/js/2.1a4889e9.chunk.js",
+    "static/js/2.1a4889e9.chunk.js.map": "/static/js/2.1a4889e9.chunk.js.map",
     "static/js/3.94e58788.chunk.js": "/static/js/3.94e58788.chunk.js",
     "static/js/3.94e58788.chunk.js.map": "/static/js/3.94e58788.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.6dea0f05.chunk.css.map": "/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.a90cf623.chunk.js.LICENSE.txt": "/static/js/2.a90cf623.chunk.js.LICENSE.txt",
+    "static/js/2.1a4889e9.chunk.js.LICENSE.txt": "/static/js/2.1a4889e9.chunk.js.LICENSE.txt",
+    "static/media/AcompanhamentoHabitosMobile.7cc6bf97.png": "/static/media/AcompanhamentoHabitosMobile.7cc6bf97.png",
+    "static/media/ExemploHome.1cb21586.jpeg": "/static/media/ExemploHome.1cb21586.jpeg",
+    "static/media/ExemploHome2.2de05aaa.jpeg": "/static/media/ExemploHome2.2de05aaa.jpeg",
+    "static/media/Google-Play-Coming-Soon.8e765f6f.png": "/static/media/Google-Play-Coming-Soon.8e765f6f.png",
     "static/media/GustavoN.e82fd3ac.jpg": "/static/media/GustavoN.e82fd3ac.jpg",
     "static/media/Selection_107.5dcc13df.png": "/static/media/Selection_107.5dcc13df.png",
     "static/media/anac.44a12340.jpg": "/static/media/anac.44a12340.jpg",
-    "static/media/graficoExemplo.4c57ce24.svg": "/static/media/graficoExemplo.4c57ce24.svg",
+    "static/media/app-store-coming-soon.83204de2.png": "/static/media/app-store-coming-soon.83204de2.png",
     "static/media/gustavof.8608755c.jpg": "/static/media/gustavof.8608755c.jpg",
     "static/media/octavio.04aed4e8.png": "/static/media/octavio.04aed4e8.png",
     "static/media/vitorj.5126b9d7.jpg": "/static/media/vitorj.5126b9d7.jpg",
@@ -23,8 +27,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.fed86d29.js",
-    "static/js/2.a90cf623.chunk.js",
+    "static/js/2.1a4889e9.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.272b60ad.chunk.js"
+    "static/js/main.4001d727.chunk.js"
   ]
 }
