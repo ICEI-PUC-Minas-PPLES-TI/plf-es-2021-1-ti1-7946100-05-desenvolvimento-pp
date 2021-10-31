@@ -1,0 +1,37 @@
+cff-version: 1.0.1
+message: Please cite this software using these metadata.
+title: Desenvolvimento Pessoal e Profissional
+authors:
+  - family-names: Corina Damas Batista
+    given-names: Ana
+  - family-names: De Castro Nogueira
+    given-names: Gustavo
+  - family-names: Ferreira Evaristo
+    given-names: Gustavo
+  - family-names: Ferreira Lemos
+    given-names: João Ricardo
+  - family-names: Oliveira Rocha
+    given-names: Octávio 
+  - family-names: De Souza Xavier
+    given-names: Vitor 
+  - family-names: Lara Bastos
+    given-names: Vitor Jose  
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: de Nardim
+    given-names: Luciana
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: Vieira Carneiro
+    given-names: Rommel
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: Alves Nogueira
+    given-names: Simone
+keywords:
+  - Desenvolvimento Pessoal
+  - Desenvolvimento Profissional
+repository-code: https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2021-1-ti1-7946100-05-desenvolvimento-pp
+license: CC-BY-4.0
+version: 1.0.0
+date-released: 2021-06-20
